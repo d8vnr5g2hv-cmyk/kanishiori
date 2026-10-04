@@ -10,10 +10,10 @@
 <meta name="apple-mobile-web-app-title" content="しおり">
 <meta name="theme-color" content="#3F5D63">
 <title>旅のしおり</title>
-<script>try{var _s=JSON.parse(localStorage.getItem('shiori_v1')||'{}');document.documentElement.setAttribute('data-theme',_s.theme==='space'?'space':'ryokan');}catch(e){document.documentElement.setAttribute('data-theme','ryokan');}</script>
+<script>try{var _s=JSON.parse(localStorage.getItem('shiori_v1')||'{}');document.documentElement.setAttribute('data-theme',['space','winter','cat','dog'].indexOf(_s.theme)>=0?_s.theme:'ryokan');}catch(e){document.documentElement.setAttribute('data-theme','ryokan');}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&family=Orbitron:wght@500;700&family=Murecho:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&family=Orbitron:wght@500;700&family=Murecho:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&family=M+PLUS+Rounded+1c:wght@500;700&family=Zen+Old+Mincho:wght@500;700&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@500;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --pink:#5F7F86; --pink-d:#43626A; --petal:#E3ECEC; --blush:#F4F6F6;
@@ -551,6 +551,218 @@ html[data-theme=space] .mav .av{border-color:#0B1026}
 html[data-theme=space] .welcome{position:relative;z-index:1}
 
 nav button{position:relative}.ndot{position:absolute;top:6px;left:calc(50% + 9px);width:7px;height:7px;border-radius:50%;background:#E8A35B}
+
+/* ===== ホーム v2 ===== */
+nav .in.c3{grid-template-columns:repeat(3,1fr)}
+.hhome .hme h1{font-size:24px;margin:0;line-height:1.3}
+.hhome .hme small{display:block;font-size:12px;opacity:.8;letter-spacing:.08em;margin-top:2px}
+.hero{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin:-2px 0 24px;padding:18px;border-radius:18px;background:var(--white);border:1px solid var(--gold-l);box-shadow:0 6px 20px rgba(35,45,44,.07);color:var(--ink)}
+.hero-l{flex:1;min-width:0}
+.hero-l small{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);letter-spacing:.06em}
+.hero-l b{display:block;font-family:var(--serif);font-size:21px;font-weight:600;margin:4px 0 2px;letter-spacing:.03em}
+.hero-l em{font-style:normal;font-size:12px;color:var(--sub)}
+.hero-r{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:70px;height:70px;border-radius:50%;background:var(--pink);color:#fff}
+.hero-r strong{font-family:var(--serif);font-size:26px;line-height:1;font-weight:600}
+.hero-r em{font-style:normal;font-size:10px;opacity:.85;margin-top:2px}
+.hsec{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
+.hsec h2{margin:0;font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.08em}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--white);font-size:12px;font-weight:700;color:var(--pink)}
+.gp{background:var(--white);border:1px solid var(--line);border-radius:18px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 14px rgba(35,45,44,.05)}
+.gp-h{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;text-align:left;background:var(--petal);color:var(--ink)}
+.gp-ic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--pink);color:#fff;flex-shrink:0}
+.gp-t{flex:1;min-width:0}
+.gp-t b{display:block;font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp-t small{font-size:11px;color:var(--sub)}
+.gp-h>.i{color:var(--sub)}
+.gp-list{padding:2px 16px}
+.trow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 0;border-bottom:1px solid var(--petal);color:var(--ink)}
+.trow:last-child{border-bottom:0}
+.dtile{width:46px;height:50px;border-radius:12px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;background:var(--blush)}
+.dtile em{font-style:normal;font-size:10px;color:var(--sub);line-height:1.2}
+.dtile strong{font-family:var(--serif);font-size:19px;line-height:1.1;font-weight:600}
+.tt{flex:1;min-width:0}
+.tt b{display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt small{display:block;font-size:11px;color:var(--sub);margin-top:1px}
+.trow.arch .dtile,.trow.arch .tt{opacity:.6}
+.chip2{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--petal);color:var(--pink);white-space:nowrap;flex-shrink:0}
+.chip2.live{background:var(--pink);color:#fff}
+.chip2.mute{background:transparent;border:1px solid var(--line);color:var(--sub)}
+.gp-empty{padding:16px 0;font-size:12px;color:var(--sub)}
+.gp-add{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border-top:1px solid var(--line);font-size:13px;font-weight:700;color:var(--pink)}
+.hempty{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--sub)}
+.hempty p{margin:0}
+.slist{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.srow{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border-bottom:1px solid var(--petal);text-align:left;color:var(--ink)}
+.srow:last-child{border-bottom:0}
+.srow-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--petal);color:var(--pink);flex-shrink:0}
+.srow-l{flex:1;font-size:14px;font-weight:500}
+.srow>.i{color:var(--sub)}
+.snote{font-size:12px;color:var(--sub);line-height:1.8;margin-top:6px}
+.btn.xs,.btn.sm{display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.manual details{border-bottom:1px solid var(--line)}
+.manual summary{display:flex;align-items:center;gap:12px;padding:13px 0;font-weight:700;font-size:14px;list-style:none;cursor:pointer}
+.manual summary::-webkit-details-marker{display:none}
+.manual summary>.i:last-child{margin-left:auto;color:var(--sub);transition:transform .2s}
+.manual details[open] summary>.i:last-child{transform:rotate(90deg)}
+.manual p{margin:0 0 14px 44px;font-size:13px;color:var(--sub);line-height:1.85}
+.skin .pv .h i{position:absolute;right:6px;top:4px;width:38px;height:38px;background:center/contain no-repeat;opacity:.45}
+.skin .pv .h{position:relative;height:46px;padding:10px;color:#fff;font-size:13px;letter-spacing:.1em}
+.skin .pv .c{margin:10px;height:36px;border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+html[data-theme=space] .hero,html[data-theme=space] .gp,html[data-theme=space] .slist,html[data-theme=space] .pill{background:rgba(8,10,34,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme=space] .gp-h{background:rgba(140,123,255,.12)}
+html[data-theme=space] .gp-ic,html[data-theme=space] .hero-r,html[data-theme=space] .chip2.live{background:linear-gradient(135deg,#8C7BFF,#4A9BFF)}
+html[data-theme=space] .hero-r strong,html[data-theme=space] .dtile strong{font-family:var(--orb)}
+html[data-theme=space] .dtile{background:rgba(255,255,255,.04)}
+html[data-theme=space] .chip2{color:var(--gold)}
+html[data-theme=space] .gp-add,html[data-theme=space] .pill{color:var(--gold)}
+html[data-theme=space] .hero-l b,html[data-theme=space] .gp-t b,html[data-theme=space] .hsec h2{font-family:var(--orb)}
+
+/* ===== 冬 ===== */
+html[data-theme=winter]{--pink:#4F6F94;--pink-d:#3C5878;--petal:#E6EEF6;--blush:#F2F6FA;--line:#D6E1EC;--ink:#1F2E42;--sub:#6B7C90;--gold:#8DB4DA;--gold-l:#BCD3EA;--white:#fff}
+html[data-theme=winter] body{background:#F2F6FA}
+html[data-theme=winter] #app{background:transparent;z-index:1}
+html[data-theme=winter] body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(3px 3px at 20px 30px,rgba(141,180,218,.55) 50%,transparent 51%),radial-gradient(2px 2px at 90px 80px,rgba(141,180,218,.5) 50%,transparent 51%),radial-gradient(4px 4px at 150px 20px,rgba(141,180,218,.4) 50%,transparent 51%),radial-gradient(2.5px 2.5px at 60px 150px,rgba(141,180,218,.5) 50%,transparent 51%),radial-gradient(3px 3px at 170px 120px,rgba(141,180,218,.45) 50%,transparent 51%);
+  background-size:200px 200px;animation:snow 14s linear infinite}
+@keyframes snow{from{background-position:0 0}to{background-position:40px 200px}}
+html[data-theme=winter] .ticket{background:linear-gradient(165deg,#4F6F94,#7FA0C4);position:relative;overflow:hidden}
+html[data-theme=winter] .ticket::before{content:'';position:absolute;right:-26px;top:-24px;width:150px;height:150px;opacity:.22;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round'%3E%3Cg transform='rotate(0 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(60 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(120 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(180 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(240 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(300 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}
+html[data-theme=winter] .ticket>*{position:relative;z-index:1}
+html[data-theme=winter] .brand,html[data-theme=winter] .stamp small{color:#E3EEF9}
+html[data-theme=winter] .evbody,html[data-theme=winter] .card,html[data-theme=winter] .panel,html[data-theme=winter] .sub-panel,html[data-theme=winter] .chk{border-radius:14px;box-shadow:0 2px 10px rgba(79,111,148,.07)}
+html[data-theme=winter] #splash{background:linear-gradient(170deg,#4F6F94,#A5C0DC)}
+html[data-theme=winter] #splash .sp-art{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round'%3E%3Cg transform='rotate(0 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(60 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(120 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(180 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(240 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3Cg transform='rotate(300 50 50)'%3E%3Cpath d='M50 50 V12 M50 24 L42 16 M50 24 L58 16 M50 36 L44 30 M50 36 L56 30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+
+/* ===== 猫 ===== */
+html[data-theme=cat]{--pink:#B07A57;--pink-d:#8E5F42;--petal:#F6ECE2;--blush:#FBF6EF;--line:#EADCCD;--ink:#4A3B33;--sub:#8C7A6E;--gold:#E0A96D;--gold-l:#EBCBA6;--white:#fff;--serif:'Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=cat] body{background:#FBF6EF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg transform='translate(14 18) rotate(-18 12 12) scale(.9)'%3E%3Cg fill='%23E9D9C6'%3E%3Cellipse cx='12' cy='16' rx='5' ry='4.2'/%3E%3Ccircle cx='6.3' cy='10.2' r='2.2'/%3E%3Ccircle cx='9.8' cy='6.4' r='2.2'/%3E%3Ccircle cx='14.2' cy='6.4' r='2.2'/%3E%3Ccircle cx='17.7' cy='10.2' r='2.2'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(72 70) rotate(20 12 12) scale(.75)'%3E%3Cg fill='%23E9D9C6'%3E%3Cellipse cx='12' cy='16' rx='5' ry='4.2'/%3E%3Ccircle cx='6.3' cy='10.2' r='2.2'/%3E%3Ccircle cx='9.8' cy='6.4' r='2.2'/%3E%3Ccircle cx='14.2' cy='6.4' r='2.2'/%3E%3Ccircle cx='17.7' cy='10.2' r='2.2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0/120px 120px}
+html[data-theme=cat] #app{background:transparent;z-index:1}
+html[data-theme=cat],html[data-theme=cat] body,html[data-theme=cat] button,html[data-theme=cat] input,html[data-theme=cat] textarea{font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=cat] .ticket{background:#B07A57;position:relative;overflow:hidden;border-radius:0 0 26px 26px}
+html[data-theme=cat] .ticket::before{content:'';position:absolute;right:-6px;bottom:-14px;width:120px;height:120px;opacity:.2;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23FFF4E6'%3E%3Cellipse cx='48' cy='74' rx='21' ry='22'/%3E%3Ccircle cx='48' cy='42' r='15'/%3E%3Cpath d='M34 37 L36 19 L46 29 Z'/%3E%3Cpath d='M50 29 L60 19 L62 37 Z'/%3E%3Cpath d='M66 88 C84 90 92 74 84 62 C82 59 78 61 80 64 C85 73 80 83 66 82 Z'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}
+html[data-theme=cat] .ticket>*{position:relative;z-index:1}
+html[data-theme=cat] .ticket::after{border-top-style:dashed}
+html[data-theme=cat] .brand,html[data-theme=cat] .stamp small{color:#FCE6CF}
+html[data-theme=cat] .evbody,html[data-theme=cat] .card,html[data-theme=cat] .panel,html[data-theme=cat] .sub-panel,html[data-theme=cat] .chk,html[data-theme=cat] .gp{border-radius:20px}
+html[data-theme=cat] .fab{border-radius:22px}
+html[data-theme=cat] #splash{background:#B07A57}
+html[data-theme=cat] #splash .sp-art{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23FCE6CF'%3E%3Cellipse cx='48' cy='74' rx='21' ry='22'/%3E%3Ccircle cx='48' cy='42' r='15'/%3E%3Cpath d='M34 37 L36 19 L46 29 Z'/%3E%3Cpath d='M50 29 L60 19 L62 37 Z'/%3E%3Cpath d='M66 88 C84 90 92 74 84 62 C82 59 78 61 80 64 C85 73 80 83 66 82 Z'/%3E%3C/g%3E%3C/svg%3E")}
+html[data-theme=cat] #splash .t{font-family:'Zen Maru Gothic',sans-serif}
+
+/* ===== 犬 ===== */
+html[data-theme=dog]{--pink:#4F86B5;--pink-d:#3A6A93;--petal:#E7F0F7;--blush:#F7F9F4;--line:#DCE6EE;--ink:#2E3A44;--sub:#728290;--gold:#E9B44C;--gold-l:#F1D08F;--white:#fff;--serif:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=dog] body{background:#F7F9F4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 130 130'%3E%3Cg transform='translate(16 20) rotate(-15 12 12) scale(.85)'%3E%3Cg fill='%23D9E4EE'%3E%3Cellipse cx='12' cy='16' rx='5' ry='4.2'/%3E%3Ccircle cx='6.3' cy='10.2' r='2.2'/%3E%3Ccircle cx='9.8' cy='6.4' r='2.2'/%3E%3Ccircle cx='14.2' cy='6.4' r='2.2'/%3E%3Ccircle cx='17.7' cy='10.2' r='2.2'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(78 74) rotate(25 12 12) scale(1.1)'%3E%3Cpath fill='%23F0E2BC' d='M7 10.6h10v2.8H7z'/%3E%3Ccircle fill='%23F0E2BC' cx='6.4' cy='10.2' r='2.3'/%3E%3Ccircle fill='%23F0E2BC' cx='6.4' cy='13.8' r='2.3'/%3E%3Ccircle fill='%23F0E2BC' cx='17.6' cy='10.2' r='2.3'/%3E%3Ccircle fill='%23F0E2BC' cx='17.6' cy='13.8' r='2.3'/%3E%3C/g%3E%3C/svg%3E") 0 0/130px 130px}
+html[data-theme=dog] #app{background:transparent;z-index:1}
+html[data-theme=dog],html[data-theme=dog] body,html[data-theme=dog] button,html[data-theme=dog] input,html[data-theme=dog] textarea{font-family:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=dog] .ticket{background:linear-gradient(160deg,#4F86B5,#6FA3CF);position:relative;overflow:hidden;border-radius:0 0 26px 26px}
+html[data-theme=dog] .ticket::before{content:'';position:absolute;right:-10px;bottom:-18px;width:126px;height:126px;opacity:.2;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Crect width='100' height='100' fill='white'/%3E%3Ccircle cx='41' cy='47' r='3.6' fill='black'/%3E%3Ccircle cx='59' cy='47' r='3.6' fill='black'/%3E%3Cellipse cx='50' cy='60' rx='5.5' ry='4' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Cg fill='%23FFF7E3' mask='url(%23m)'%3E%3Ccircle cx='50' cy='52' r='23'/%3E%3Cellipse cx='50' cy='64' rx='14' ry='11'/%3E%3C/g%3E%3Cg fill='%23FFF7E3' opacity='.75'%3E%3Cellipse cx='25' cy='52' rx='9' ry='20' transform='rotate(22 25 52)'/%3E%3Cellipse cx='75' cy='52' rx='9' ry='20' transform='rotate(-22 75 52)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}
+html[data-theme=dog] .ticket>*{position:relative;z-index:1}
+html[data-theme=dog] .brand,html[data-theme=dog] .stamp small{color:#FFE9B8}
+html[data-theme=dog] .stamp{border-color:#F1D08F}
+html[data-theme=dog] .evbody,html[data-theme=dog] .card,html[data-theme=dog] .panel,html[data-theme=dog] .sub-panel,html[data-theme=dog] .chk,html[data-theme=dog] .gp{border-radius:20px}
+html[data-theme=dog] .fab{background:#E9B44C;box-shadow:0 4px 14px rgba(233,180,76,.4)}
+html[data-theme=dog] nav button.on{color:#3A6A93}
+html[data-theme=dog] #splash{background:linear-gradient(160deg,#4F86B5,#7FB0D8)}
+html[data-theme=dog] #splash .sp-art{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Crect width='100' height='100' fill='white'/%3E%3Ccircle cx='41' cy='47' r='3.6' fill='black'/%3E%3Ccircle cx='59' cy='47' r='3.6' fill='black'/%3E%3Cellipse cx='50' cy='60' rx='5.5' ry='4' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Cg fill='%23FFF7E3' mask='url(%23m)'%3E%3Ccircle cx='50' cy='52' r='23'/%3E%3Cellipse cx='50' cy='64' rx='14' ry='11'/%3E%3C/g%3E%3Cg fill='%23FFF7E3' opacity='.75'%3E%3Cellipse cx='25' cy='52' rx='9' ry='20' transform='rotate(22 25 52)'/%3E%3Cellipse cx='75' cy='52' rx='9' ry='20' transform='rotate(-22 75 52)'/%3E%3C/g%3E%3C/svg%3E")}
+html[data-theme=dog] #splash .t{font-family:'M PLUS Rounded 1c',sans-serif}
+
+/* スプラッシュの絵（着せ替え共通） */
+#splash .sp-art{display:none;width:96px;height:96px;background:center/contain no-repeat;opacity:0;animation:spIn .9s ease .1s forwards}
+html[data-theme=winter] #splash svg,html[data-theme=cat] #splash svg,html[data-theme=dog] #splash svg{display:none}
+html[data-theme=winter] #splash .sp-art,html[data-theme=cat] #splash .sp-art,html[data-theme=dog] #splash .sp-art{display:block}
+/* ===== 画像の着せ替え（冬・猫・犬）v3 ===== */
+html[data-theme=winter],html[data-theme=cat],html[data-theme=dog]{--white:rgba(255,255,255,.9)}
+html[data-theme=winter] .ticket::before,html[data-theme=cat] .ticket::before,html[data-theme=dog] .ticket::before{display:none}
+html[data-theme=winter] .ticket,html[data-theme=cat] .ticket,html[data-theme=dog] .ticket{background-repeat:no-repeat;background-position:right center;background-size:auto 100%}
+html[data-theme=winter] body,html[data-theme=cat] body,html[data-theme=dog] body{background-repeat:no-repeat;background-position:center;background-size:cover;background-attachment:fixed}
+html[data-theme=winter] #splash,html[data-theme=cat] #splash,html[data-theme=dog] #splash{background-repeat:no-repeat;background-position:center;background-size:cover;justify-content:flex-end;padding-bottom:16vh}
+html[data-theme=winter] #splash .sp-art,html[data-theme=cat] #splash .sp-art,html[data-theme=dog] #splash .sp-art,html[data-theme=winter] #splash svg,html[data-theme=cat] #splash svg,html[data-theme=dog] #splash svg{display:none}
+
+/* 冬：雪の夜とクリスマス */
+html[data-theme=winter]{--pink:#1E3A66;--pink-d:#14294A;--petal:rgba(214,226,242,.7);--blush:#0B1C3A;--line:rgba(190,208,232,.55);--ink:#1A2944;--sub:#5F708C;--gold:#D9B26A;--gold-l:#E6CD96;
+  --serif:'Cormorant Garamond','Zen Old Mincho','Hiragino Mincho ProN',serif}
+html[data-theme=winter],html[data-theme=winter] body,html[data-theme=winter] button,html[data-theme=winter] input,html[data-theme=winter] textarea{font-family:'Zen Old Mincho','Hiragino Mincho ProN',serif}
+html[data-theme=winter] body{background-color:#0B1C3A;background-image:url("skins/winter-bg.jpg")}
+html[data-theme=winter] body::before{background-image:radial-gradient(2.5px 2.5px at 20px 30px,rgba(255,255,255,.75) 50%,transparent 51%),radial-gradient(1.6px 1.6px at 90px 80px,rgba(255,255,255,.6) 50%,transparent 51%),radial-gradient(3px 3px at 150px 20px,rgba(255,255,255,.5) 50%,transparent 51%),radial-gradient(2px 2px at 60px 150px,rgba(255,255,255,.65) 50%,transparent 51%)}
+html[data-theme=winter] .ticket{background-color:#081B3A;background-image:url("skins/winter-hd.jpg");border-radius:0}
+html[data-theme=winter] .ticket::after{border-top-color:rgba(217,178,106,.6)}
+html[data-theme=winter] .brand,html[data-theme=winter] .stamp small{color:#E6CD96}
+html[data-theme=winter] .stamp{border-color:rgba(217,178,106,.7)}
+html[data-theme=winter] .sec-h h2,html[data-theme=winter] .hsec h2,html[data-theme=winter] .dnum,html[data-theme=winter] .ddate,html[data-theme=winter] .sec-h .meta,html[data-theme=winter] .cat-h,html[data-theme=winter] .cat-h h3,html[data-theme=winter] .evtime,html[data-theme=winter] .evtime small,html[data-theme=winter] .snote,html[data-theme=winter] .hint{color:#F3F6FB;text-shadow:0 1px 8px rgba(4,12,30,.7)}
+html[data-theme=winter] .dnum{color:#E6CD96}
+html[data-theme=winter] .sec-h,html[data-theme=winter] .dayhead{border-bottom-color:rgba(230,205,150,.45)}
+html[data-theme=winter] .evbody,html[data-theme=winter] .card,html[data-theme=winter] .panel,html[data-theme=winter] .sub-panel,html[data-theme=winter] .chk,html[data-theme=winter] .gp,html[data-theme=winter] .hero,html[data-theme=winter] .slist,html[data-theme=winter] .frcard,html[data-theme=winter] .codebox{background:rgba(250,252,255,.92);border-color:rgba(255,255,255,.6);box-shadow:0 6px 22px rgba(4,12,30,.28)}
+html[data-theme=winter] .addrow,html[data-theme=winter] .dashed{background:rgba(250,252,255,.18);color:#F3F6FB;border-color:rgba(230,205,150,.6)}
+html[data-theme=winter] .gp-h{background:rgba(30,58,102,.08)}
+html[data-theme=winter] .gp-ic,html[data-theme=winter] .hero-r,html[data-theme=winter] .chip2.live{background:#1E3A66}
+html[data-theme=winter] .chip2{background:rgba(30,58,102,.1);color:#1E3A66}
+html[data-theme=winter] .tl::before{background:rgba(230,205,150,.6)}
+html[data-theme=winter] .evdot{background:#1E3A66;color:#E6CD96;border-color:#E6CD96}
+html[data-theme=winter] nav{background:rgba(250,252,255,.94)}
+html[data-theme=winter] nav button.on{color:#1E3A66}
+html[data-theme=winter] nav button.on::before{background:#B8483E}
+html[data-theme=winter] .fab{background:#B8483E;box-shadow:0 0 0 1px #E6CD96 inset,0 6px 18px rgba(4,12,30,.35)}
+html[data-theme=winter] .pill{background:rgba(250,252,255,.9)}
+html[data-theme=winter] #splash{background-color:#011F4E;background-image:url("skins/winter-sp.jpg")}
+html[data-theme=winter] #splash .t{font-family:'Zen Old Mincho',serif;text-shadow:0 2px 14px rgba(0,10,30,.6)}
+html[data-theme=winter] #splash .r{background:#D9B26A}
+
+/* 猫：キャラメルとクリーム */
+html[data-theme=cat]{--pink:#B8722F;--pink-d:#93591F;--petal:#F7E9D8;--blush:#FBF3E8;--line:#EBD9C3;--ink:#4A3524;--sub:#8F7560;--gold:#E2A660;--gold-l:#EDC897;
+  --serif:'Quicksand','Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=cat],html[data-theme=cat] body,html[data-theme=cat] button,html[data-theme=cat] input,html[data-theme=cat] textarea{font-family:'Quicksand','Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=cat] body{background-color:#F6EBDB;background-image:url("skins/cat-bg.jpg")}
+html[data-theme=cat] .ticket{background-color:#C68339;background-image:url("skins/cat-hd.jpg")}
+html[data-theme=cat] .evbody,html[data-theme=cat] .card,html[data-theme=cat] .panel,html[data-theme=cat] .sub-panel,html[data-theme=cat] .chk,html[data-theme=cat] .gp,html[data-theme=cat] .hero,html[data-theme=cat] .slist,html[data-theme=cat] .frcard,html[data-theme=cat] .codebox{background:rgba(255,252,247,.94);box-shadow:0 4px 16px rgba(120,80,40,.08)}
+html[data-theme=cat] .gp-h{background:#F7E9D8}
+html[data-theme=cat] .fab{background:#B8722F}
+html[data-theme=cat] #splash{background-color:#DC9B52;background-image:url("skins/cat-sp.jpg")}
+html[data-theme=cat] #splash .t{font-family:'Zen Maru Gothic',sans-serif;color:#fff;text-shadow:0 2px 12px rgba(110,60,20,.4)}
+html[data-theme=cat] #splash .r{background:#fff}
+
+/* 犬：青空とマスタード */
+html[data-theme=dog]{--pink:#3E86C2;--pink-d:#2D6A9E;--petal:#E3EFF8;--blush:#F2F8FC;--line:#D3E3EF;--ink:#24364A;--sub:#6A8095;--gold:#E9B44C;--gold-l:#F1D08F;
+  --serif:'Fredoka','M PLUS Rounded 1c','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=dog],html[data-theme=dog] body,html[data-theme=dog] button,html[data-theme=dog] input,html[data-theme=dog] textarea{font-family:'Fredoka','M PLUS Rounded 1c','Hiragino Maru Gothic ProN',sans-serif}
+html[data-theme=dog] body{background-color:#DCEBF5;background-image:url("skins/dog-bg.jpg")}
+html[data-theme=dog] .ticket{background-color:#61A8DC;background-image:url("skins/dog-hd.jpg")}
+html[data-theme=dog] .evbody,html[data-theme=dog] .card,html[data-theme=dog] .panel,html[data-theme=dog] .sub-panel,html[data-theme=dog] .chk,html[data-theme=dog] .gp,html[data-theme=dog] .hero,html[data-theme=dog] .slist,html[data-theme=dog] .frcard,html[data-theme=dog] .codebox{background:rgba(255,255,255,.94);box-shadow:0 4px 16px rgba(40,90,140,.08)}
+html[data-theme=dog] .gp-h{background:#E3EFF8}
+html[data-theme=dog] #splash{background-color:#76B8E3;background-image:url("skins/dog-sp.jpg")}
+html[data-theme=dog] #splash .t{font-family:'M PLUS Rounded 1c',sans-serif;color:#fff;text-shadow:0 2px 12px rgba(20,60,100,.4)}
+html[data-theme=dog] #splash .r{background:#E9B44C}
+/* スプラッシュ：絵を上寄せにして、タイトルは下 */
+html[data-theme=winter] #splash,html[data-theme=cat] #splash,html[data-theme=dog] #splash{background-size:100% auto;background-position:center 38%;padding-bottom:9vh}
+/* しおりのヘッダー：右の絵と重ならないよう、カウントダウンを左下の札に */
+html[data-theme=winter] .ticket .hmain,html[data-theme=cat] .ticket .hmain,html[data-theme=dog] .ticket .hmain,html[data-theme=space] .ticket .hmain{flex-direction:column;align-items:flex-start;gap:10px}
+html[data-theme=winter] .ticket .stamp,html[data-theme=cat] .ticket .stamp,html[data-theme=dog] .ticket .stamp,html[data-theme=space] .ticket .stamp{width:auto;height:auto;flex-direction:row;align-items:baseline;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.45);transform:none;outline:none;box-shadow:none}
+html[data-theme=winter] .ticket .stamp b,html[data-theme=cat] .ticket .stamp b,html[data-theme=dog] .ticket .stamp b,html[data-theme=space] .ticket .stamp b{font-size:22px;line-height:1}
+html[data-theme=winter] .ticket .stamp small,html[data-theme=cat] .ticket .stamp small,html[data-theme=dog] .ticket .stamp small,html[data-theme=space] .ticket .stamp small{font-size:11px;margin:0}
+html[data-theme=winter] .ticket h1,html[data-theme=cat] .ticket h1,html[data-theme=dog] .ticket h1,html[data-theme=space] .ticket h1{max-width:68%}
+html[data-theme=winter] .ticket .dates,html[data-theme=cat] .ticket .dates,html[data-theme=dog] .ticket .dates,html[data-theme=space] .ticket .dates{max-width:66%}
+
+/* 宇宙：画像版 */
+#sky{display:none!important}
+html[data-theme=space] body{background:#0E0F35 url("skins/space-bg.jpg") center/cover no-repeat}
+html[data-theme=space] .ticket{background:#051035 url("skins/space-hd.jpg") right center/auto 100% no-repeat}
+html[data-theme=space] .ticket::before{display:none}
+html[data-theme=space] #splash{background:#060E33 url("skins/space-sp.jpg") center 38%/100% auto no-repeat;justify-content:flex-end;padding-bottom:9vh}
+html[data-theme=space] #splash .sp-moon,html[data-theme=space] #splash svg,html[data-theme=space] #splash .sp-art{display:none}
+/* 空っぽのときのイラスト */
+.emp{display:block;width:150px;height:150px;border-radius:20px;background:url("skins/ryokan-empty.jpg") center/cover;mix-blend-mode:multiply;margin:0 auto 6px}
+.emp.sm{width:96px;height:96px;margin:4px auto 6px}
+.gp-empty{text-align:center}
+html[data-theme=winter] .emp{background-image:url("skins/winter-empty.jpg")}
+html[data-theme=cat] .emp{background-image:url("skins/cat-empty.jpg")}
+html[data-theme=dog] .emp{background-image:url("skins/dog-empty.jpg")}
+html[data-theme=space] .emp{background-image:url("skins/space-empty.jpg");mix-blend-mode:normal;border-radius:24px;box-shadow:0 0 24px rgba(140,123,255,.35)}
+.hempty{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px 16px}
+html[data-theme=space] .hempty{background:rgba(8,10,34,.66)}
+html[data-theme=winter] .hempty{background:rgba(250,252,255,.92)}
+/* はじめての画面 */
+.welimg{height:190px;margin:-12px -2px 22px;border-radius:18px;background:#F7F6F2 url("skins/welcome.jpg") center/cover;box-shadow:0 6px 20px rgba(35,45,44,.08)}
+html[data-theme=space] .welcome{background:transparent}
+.skin .pv .h{text-shadow:0 1px 6px rgba(0,0,0,.35)}
 </style>
 <script>
 (function(){function f(){var r=document.documentElement,st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;var land=innerWidth>innerHeight,sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height);var gap=st?sh-innerHeight:0;r.classList.toggle('shim',gap>20);}f();addEventListener('resize',f);addEventListener('orientationchange',function(){setTimeout(f,300);});})();
@@ -560,6 +772,7 @@ nav button{position:relative}.ndot{position:absolute;top:6px;left:calc(50% + 9px
 <div id="splash" aria-hidden="true">
   <svg viewBox="0 0 120 230" fill="none"><path d="M60 40V8" stroke="#CDBB91" stroke-width="2.4"/><circle cx="60" cy="7" r="6" stroke="#CDBB91" stroke-width="2.4"/><path d="M12 40h96v170l-48-40-48 40z" fill="#CDBB91"/><path d="M23 51h74v133l-37-31-37 31z" stroke="#3F5D63" stroke-width="2.4"/></svg>
   <div class="sp-moon"></div>
+  <div class="sp-art"></div>
   <div class="t">旅のしおり</div>
   <div class="r"></div>
 </div>
@@ -569,7 +782,7 @@ nav button{position:relative}.ndot{position:absolute;top:6px;left:calc(50% + 9px
 (function(){
 var cv=null;
 function draw(){
-  if(document.documentElement.getAttribute('data-theme')!=='space'){if(cv)cv.style.display='none';return;}
+  if(true){if(cv)cv.style.display='none';return;}
   if(!cv){cv=document.createElement('canvas');cv.id='sky';document.body.insertBefore(cv,document.body.firstChild);}
   cv.style.display='block';
   var dpr=Math.min(window.devicePixelRatio||1,2),w=innerWidth,h=Math.max(innerHeight,screen.height||0);
@@ -608,7 +821,7 @@ function draw(){
     pts.forEach(function(p){var x=p[0]*w,y=p[1]*h,R=p[2]||2,g=c.createRadialGradient(x,y,0,x,y,R*5);
       g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.3,'rgba(190,225,255,.5)');g.addColorStop(1,'rgba(190,225,255,0)');
       c.fillStyle=g;c.beginPath();c.arc(x,y,R*5,0,7);c.fill();});
-    if(label){c.fillStyle='rgba(170,220,255,.38)';c.font='9px Orbitron, Murecho, sans-serif';c.fillText(label,lx*w,ly*h);}
+    if(false&&label){c.fillStyle='rgba(170,220,255,.38)';c.font='9px Orbitron, Murecho, sans-serif';c.fillText(label,lx*w,ly*h);}
   }
   cst([[.62,.30,2.6],[.86,.40,2.2],[.70,.58,2.4]],[[0,1],[1,2],[2,0]],'夏の大三角',.66,.47);
   cst([[.08,.22,1.6],[.16,.27,1.8],[.22,.21,1.6],[.30,.26,1.8],[.37,.20,1.6]],[[0,1],[1,2],[2,3],[3,4]],'カシオペヤ',.12,.17);
@@ -673,7 +886,19 @@ var P={
   save:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
   bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
   book:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 4v6l2-1.5L13 10V4"/>',
-  back:'<path d="M15 5l-7 7 7 7"/>'
+  back:'<path d="M15 5l-7 7 7 7"/>',
+  chev:'<path d="M9 5l7 7-7 7"/>',
+  palette:'<path d="M12 3a9 9 0 0 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="10" cy="7" r="1.1"/><circle cx="14.5" cy="7" r="1.1"/><circle cx="17" cy="10.5" r="1.1"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  help:'<path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v17H5.5A2.5 2.5 0 0 1 3 17.5z"/><path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v17h5.5a2.5 2.5 0 0 0 2.5-2.5z"/>',
+  import:'<path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+  send:'<path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/>',
+  archive:'<rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19V9M10 13h4"/>',
+  usercheck:'<circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 13-3.6"/><path d="M16 19l2 2 4-4"/>',
+  userplus:'<circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 12.5-4.3"/><path d="M19 14v6M16 17h6"/>',
+  pen:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>'
 };
 function ico(n,s){s=s||20;return '<svg class="i" width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 
@@ -1171,10 +1396,11 @@ function renderLoading(){
 /* ---------- アカウント・ホーム ---------- */
 var VIEW='home', HV='trips', ACC=null, ROSTER={}, ARCH=false, homeBusy=false;
 var THEMES=[
-  {id:'ryokan',name:'旅館',desc:'深緑と金、明朝の落ち着き',color:'#3F5D63'},
-  {id:'space',name:'宇宙',desc:'銀河と星座、月夜のしおり',color:'#05071A'},
-  {id:'soon1',name:'近日追加',desc:'新しい着せ替えを準備中',lock:true},
-  {id:'soon2',name:'近日追加',desc:'リクエスト受付中',lock:true}
+  {id:'ryokan',name:'ベーシック',desc:'深緑と金、明朝の落ち着き',color:'#3F5D63'},
+  {id:'space',name:'宇宙',desc:'銀河と月、宇宙飛行士',color:'#051035',pv:{bg:'#0E0F35 url(skins/space-bg.jpg) center/cover',head:'#051035 url(skins/space-hd.jpg) right center/auto 100% no-repeat',font:"'Orbitron',sans-serif"}},
+  {id:'winter',name:'冬',desc:'雪の夜とクリスマス',color:'#081B3A',pv:{bg:'#0B1C3A url(skins/winter-bg.jpg) center/cover',head:'#081B3A url(skins/winter-hd.jpg) right center/auto 100% no-repeat',font:"'Zen Old Mincho',serif"}},
+  {id:'cat',name:'猫',desc:'キャラメル色と、のぞく猫',color:'#C68339',pv:{bg:'#F6EBDB url(skins/cat-bg.jpg) center/cover',head:'#C68339 url(skins/cat-hd.jpg) right center/auto 100% no-repeat',font:"'Zen Maru Gothic',sans-serif"}},
+  {id:'dog',name:'犬',desc:'青空と、のぞく柴犬',color:'#61A8DC',pv:{bg:'#DCEBF5 url(skins/dog-bg.jpg) center/cover',head:'#61A8DC url(skins/dog-hd.jpg) right center/auto 100% no-repeat',font:"'M PLUS Rounded 1c',sans-serif"}}
 ];
 function themeOf(id){for(var i=0;i<THEMES.length;i++)if(THEMES[i].id===id&&!THEMES[i].lock)return THEMES[i];return THEMES[0];}
 function applyTheme(id){var th=themeOf(id);S.theme=th.id;document.documentElement.setAttribute('data-theme',th.id);
@@ -1210,7 +1436,7 @@ function pickImage(cb){
 /* はじめての画面 */
 function renderSignup(){
   VIEW='setup';var img='';
-  app.innerHTML='<div class="welcome"><h1>はじめまして</h1><p>アカウントを作ると、フレンドとしおりを共有できます。旅が変わっても、登録はこの1回だけです。</p>'+
+  app.innerHTML='<div class="welcome"><div class="welimg"></div><h1>はじめまして</h1><p>アカウントを作ると、フレンドとしおりを共有できます。旅が変わっても、登録はこの1回だけです。</p>'+
     fld('名前','<input id="fNm" maxlength="20" placeholder="例：耀平">')+
     '<label class="f"><span>プロフィール画像</span></label><div class="photo"><span id="suAv">'+pAv({name:'？'},72)+'</span><button class="btn ghost xs" id="fPic">写真を選ぶ</button></div>'+
     '<div class="note">正方形に切り抜いて、小さく保存します。未設定なら名前の頭文字になります。</div>'+
@@ -1252,6 +1478,19 @@ function renderMigrate(){
     });
   });
 }
+function migSheet(){
+  openSheet('以前のしおりを引き継ぐ','<p class="hint" style="margin:0 0 14px">以前のしおりの共有リンク（LINEなどで送ったもの）を貼り付けてください。</p>'+
+    '<div class="addline" style="margin:0 0 16px"><input id="mgIn" placeholder="共有リンクを貼り付け"><button class="btn sm" id="mgGo">確認</button></div><div id="mgBox"></div>',function(el){
+    el.querySelector('#mgGo').onclick=function(){
+      var raw=v(el,'#mgIn'),m=raw.match(/[?#&]t=([a-z0-9]+)/i),tid=m?m[1]:(/^[a-z0-9]+$/i.test(raw)?raw:'');
+      if(!tid){toast('共有リンクが読み取れませんでした');return;}
+      var box=el.querySelector('#mgBox');box.innerHTML='<p class="hint">確認中…</p>';
+      getJSON(API,'a=claimInfo&t='+encodeURIComponent(tid)).then(function(r){
+        if(!r||r.error)throw new Error(r&&r.error);box.innerHTML=migCard(tid,r);bindMig(box);
+      }).catch(function(){box.innerHTML='<p class="hint">しおりが見つかりませんでした。リンクを確認してください。</p>';});
+    };
+  });
+}
 function migCard(tid,r){
   var free=r.members.filter(function(m){return !m.linked;});
   return '<div class="mig" data-mig="'+tid+'" data-hasg="'+(r.hasGroup?1:0)+'"><h3>'+esc(r.title||'しおり')+'</h3><div class="note" style="margin:0 0 12px">'+esc((r.start||'').replace(/-/g,'/'))+'</div>'+
@@ -1273,6 +1512,7 @@ function bindMig(box){
         S.me=S.me||{};S.me[c.dataset.mig]=mid;
         S.known=S.known.filter(function(x){return x.id!==c.dataset.mig;});if(!S.known.length)S.migrated=true;savePrefs();
         c.classList.add('done');c.innerHTML='<h3>引き継ぎました</h3><div class="note" style="margin:0">ホームのグループから開けます</div>';
+        if(c.closest('.sheet')){closeSheet();toast('引き継ぎました');goHome();return;}
         if(S.migrated){toast('引き継ぎが完了しました');setTimeout(goHome,700);}
       }).catch(function(e){go.disabled=false;go.textContent='引き継ぐ';toast(e.message);});
     };
@@ -1295,40 +1535,57 @@ function mstamp(x){
   return '<span class="htag">おかえり</span>';
 }
 function rangeTxt(x){var s=pd(x.start),e=pd(x.end);if(!s)return '';return fday(s)+(e&&x.end!==x.start?' 〜 '+fday(e):'');}
+function todayTxt(){var d=today0();return (d.getMonth()+1)+'月'+d.getDate()+'日（'+WD[d.getDay()]+'）';}
+function tripStatus(x){
+  if(x.arch)return '<span class="chip2 mute">'+ico('archive',13)+'思い出</span>';
+  var s=pd(x.start),e=pd(x.end)||s,td=today0();if(!s)return '';
+  var d=Math.round((s-td)/864e5);
+  if(d>0)return '<span class="chip2">あと'+d+'日</span>';
+  if(td<=e)return '<span class="chip2 live">旅行中</span>';
+  return '<span class="chip2 mute">おかえり</span>';
+}
+function nextTrip(){var best=null,td=today0();
+  ACC.groups.forEach(function(g){g.trips.forEach(function(x){if(x.arch)return;var s=pd(x.start),e=pd(x.end)||s;if(!s||e<td)return;
+    if(!best||s<best.s)best={x:x,g:g,s:s,e:e};});});return best;}
 function renderHome(){
   if(!ACC)return;VIEW='home';var me=ACC.me;
-  var h='<header class="ticket"><div class="hrow"><span class="brand">旅のしおり</span><div class="hbtns"><button class="hbtn bell'+(ACC.incoming.length?' has':'')+'" id="hBell" aria-label="お知らせ">'+ico('bell',22)+'<i></i></button></div></div>'+
-    '<div class="hmain"><div class="hme">'+pAv(me,50)+'<div><small>おかえりなさい</small><h1>'+esc(me.name)+'</h1></div></div></div></header><main id="main">';
+  var h='<header class="ticket hhome"><div class="hrow"><span class="brand">旅のしおり</span><div class="hbtns"><button class="hbtn bell'+(ACC.incoming.length?' has':'')+'" id="hBell" aria-label="お知らせ">'+ico('bell',22)+'<i></i></button></div></div>'+
+    '<div class="hmain"><div class="hme">'+pAv(me,52)+'<div><h1>'+esc(me.name)+'</h1><small>'+todayTxt()+'</small></div></div></div></header><main id="main">';
   if(HV==='friends')h+=hFriends();else if(HV==='settings')h+=hSettings();else h+=hTrips();
-  h+='</main><nav><div class="in">'+[['trips','しおり','book'],['friends','フレンド','people'],['settings','設定','sliders']].map(function(x){
+  h+='</main><nav><div class="in c3">'+[['trips','しおり','book'],['friends','フレンド','people'],['settings','設定','sliders']].map(function(x){
     return '<button data-hv="'+x[0]+'" class="'+(HV===x[0]?'on':'')+'">'+ico(x[2],22)+x[1]+(x[0]==='friends'&&ACC.incoming.length?'<i class="ndot"></i>':'')+'</button>';}).join('')+'</div></nav>';
   var y=app.scrollTop;app.innerHTML=h;app.scrollTop=y;bindHome();
 }
 function hTrips(){
-  var h='';
-  if(!ACC.groups.length)h+='<div class="hempty">まだグループがありません。<br>グループを作ると、その中でしおりを作れます。<br>一緒に旅する人は「フレンド」から追加してください。</div>';
+  var h='',nx=nextTrip();
+  if(nx){var d=Math.round((nx.s-today0())/864e5),live=d<=0;
+    h+='<button class="hero" data-open="'+nx.x.tid+'"><span class="hero-l"><small>'+ico('cal',14)+(live?'旅行中':'次の旅')+'・'+esc(nx.g.name)+'</small><b>'+esc(nx.x.title||'しおり')+'</b><em>'+rangeTxt(nx.x)+'</em></span>'+
+      '<span class="hero-r"><strong>'+(live?Math.round((today0()-nx.s)/864e5)+1:d)+'</strong><em>'+(live?'日目':'日後')+'</em></span></button>';}
+  h+='<div class="hsec"><h2>グループ</h2><button class="pill" id="hNewG">'+ico('plus',15)+'グループを作る</button></div>';
+  if(!ACC.groups.length)h+='<div class="hempty"><span class="emp"></span><p>まだグループがありません。<br>グループを作ると、その中でしおりを作れます。<br>一緒に旅する人は「フレンド」から追加できます。</p></div>';
   ACC.groups.forEach(function(g){
     var act=g.trips.filter(function(x){return !x.arch;}),arc=g.trips.filter(function(x){return x.arch;});
-    h+='<div class="grp"><button class="grp-h" data-grp="'+g.gid+'"><h2>'+esc(g.name)+'</h2><span class="mav">'+g.members.map(function(m){return pAv(m,24);}).join('')+'</span>'+ico('arrow',16)+'</button>'+
-      act.concat(arc).map(function(x){return '<button class="hcard" data-open="'+x.tid+'"><span class="t"><b>'+esc(x.title||'しおり')+'</b><small>'+rangeTxt(x)+'</small></span>'+mstamp(x)+'</button>';}).join('')+
-      '<button class="dashed" data-nt="'+g.gid+'">＋ このグループでしおりをつくる</button></div>';
+    h+='<section class="gp"><button class="gp-h" data-grp="'+g.gid+'"><span class="gp-ic">'+ico('people',18)+'</span><span class="gp-t"><b>'+esc(g.name)+'</b><small>'+g.members.length+'人・しおり'+g.trips.length+'件</small></span><span class="mav">'+g.members.slice(0,4).map(function(m){return pAv(m,24);}).join('')+'</span>'+ico('chev',16)+'</button>'+
+      '<div class="gp-list">'+(g.trips.length?act.concat(arc).map(function(x){var sd=pd(x.start);
+        return '<button class="trow'+(x.arch?' arch':'')+'" data-open="'+x.tid+'"><span class="dtile">'+(sd?'<em>'+(sd.getMonth()+1)+'月</em><strong>'+sd.getDate()+'</strong>':'<em>未定</em>')+'</span><span class="tt"><b>'+esc(x.title||'しおり')+'</b><small>'+rangeTxt(x)+'</small></span>'+tripStatus(x)+'</button>';}).join(''):'<div class="gp-empty"><span class="emp sm"></span>まだしおりがありません</div>')+'</div>'+
+      '<button class="gp-add" data-nt="'+g.gid+'">'+ico('plus',16)+'このグループでしおりを作る</button></section>';
   });
-  return h+'<button class="dashed" id="hNewG" style="margin-top:6px">＋ 新しいグループをつくる</button>';
-}
-function hFriends(){
-  var h='<div class="sec"><div class="sec-h"><h2>あなたの合言葉</h2></div><div class="codebox"><small>フレンドに伝えてください</small><b>'+esc(ACC.me.code)+'</b><button class="btn xs" id="hCopy">合言葉をコピー</button></div></div>'+
-    '<div class="sec"><div class="sec-h"><h2>フレンド申請する</h2></div><div class="addline" style="margin:0"><input id="hCode" placeholder="相手の合言葉"><button class="btn sm" id="hReq">申請</button></div>'+
-    (ACC.out.length?'<div class="frcard" style="margin-top:10px">'+ACC.out.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><span class="htag">承認待ち</span></div>';}).join('')+'</div>':'')+'</div>';
-  if(ACC.incoming.length)h+='<div class="sec"><div class="sec-h"><h2>届いた申請</h2><span class="meta">'+ACC.incoming.length+'件</span></div><div class="frcard">'+ACC.incoming.map(function(p){
-    return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><button class="btn xs" data-fok="'+p.uid+'">承認</button><button class="btn xs ghost" data-fng="'+p.uid+'">見送る</button></div>';}).join('')+'</div></div>';
-  h+='<div class="sec"><div class="sec-h"><h2>フレンド</h2><span class="meta">'+ACC.friends.length+'人</span></div>'+(ACC.friends.length?'<div class="frcard">'+ACC.friends.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b></div>';}).join('')+'</div>':'<div class="hempty" style="padding:12px">まだいません。合言葉を交換しましょう。</div>')+'</div>';
   return h;
 }
+function hFriends(){
+  var h='<div class="sec"><div class="sec-h"><h2>あなたの合言葉</h2></div><div class="codebox"><small>フレンドに伝えてください</small><b>'+esc(ACC.me.code)+'</b><button class="btn xs" id="hCopy">'+ico('copy',15)+'合言葉をコピー</button></div></div>'+
+    '<div class="sec"><div class="sec-h"><h2>フレンド申請する</h2></div><div class="addline" style="margin:0"><input id="hCode" placeholder="相手の合言葉"><button class="btn sm" id="hReq">'+ico('send',15)+'申請</button></div>'+
+    (ACC.out.length?'<div class="frcard" style="margin-top:10px">'+ACC.out.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><span class="htag">承認待ち</span></div>';}).join('')+'</div>':'')+'</div>';
+  if(ACC.incoming.length)h+='<div class="sec"><div class="sec-h"><h2>届いた申請</h2><span class="meta">'+ACC.incoming.length+'件</span></div><div class="frcard">'+ACC.incoming.map(function(p){
+    return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><button class="btn xs" data-fok="'+p.uid+'">'+ico('usercheck',15)+'承認</button><button class="btn xs ghost" data-fng="'+p.uid+'">見送る</button></div>';}).join('')+'</div></div>';
+  h+='<div class="sec"><div class="sec-h"><h2>フレンド</h2><span class="meta">'+ACC.friends.length+'人</span></div>'+(ACC.friends.length?'<div class="frcard">'+ACC.friends.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b></div>';}).join('')+'</div>':'<div class="hempty"><span class="emp"></span><p>まだいません。合言葉を交換しましょう。</p></div>')+'</div>';
+  return h;
+}
+function srow(id,icon,label,meta){return '<button class="srow" id="'+id+'"><span class="srow-ic">'+ico(icon,18)+'</span><span class="srow-l">'+label+'</span><span class="meta">'+(meta||'')+'</span>'+ico('chev',16)+'</button>';}
 function hSettings(){
-  return '<div class="sec"><div class="sec-h"><h2>設定</h2></div><div class="tlist">'+
-    '<button class="row" id="hSkin"><span>着せ替え</span><span class="meta">'+esc(themeOf(S.theme).name)+'</span></button>'+
-    '<button class="row" id="hProf"><span>プロフィール</span><span class="meta">名前・画像</span></button></div></div>'+
-    '<div class="note" style="font-size:12px;color:var(--sub);line-height:1.8">アカウントはこのスマホに保存されています。機種変更やアプリの削除で、このアカウントには入れなくなります（しおりのデータは残ります）。</div>';
+  return '<div class="sec"><div class="sec-h"><h2>設定</h2></div><div class="slist">'+
+    srow('hSkin','palette','着せ替え',esc(themeOf(S.theme).name))+srow('hProf','user','プロフィール','名前・画像')+srow('hHelp','help','使い方','')+srow('hMig','import','以前のしおりを引き継ぐ','')+'</div></div>'+
+    '<div class="snote">アカウントはこのスマホに保存されています。機種変更やアプリの削除で、このアカウントには入れなくなります（しおりのデータは残ります）。</div>';
 }
 function bindHome(){
   function on(id,fn){var el=document.getElementById(id);if(el)el.onclick=fn;}
@@ -1343,7 +1600,24 @@ function bindHome(){
     accApi({a:'friendReq',code:c}).then(function(){i.value='';renderHome();toast('申請しました');}).catch(function(e){toast(e.message);});});
   qa('[data-fok]').forEach(function(b){b.onclick=function(){var n=(ROSTER[b.dataset.fok]||{}).name||'';accApi({a:'friendRes',uid:b.dataset.fok,ok:true}).then(function(){renderHome();toast(n+'さんとフレンドになりました');}).catch(function(e){toast(e.message);});};});
   qa('[data-fng]').forEach(function(b){b.onclick=function(){accApi({a:'friendRes',uid:b.dataset.fng,ok:false}).then(renderHome).catch(function(e){toast(e.message);});};});
-  on('hSkin',skinSheet);on('hProf',profileSheet);
+  on('hSkin',skinSheet);on('hProf',profileSheet);on('hMig',migSheet);on('hHelp',helpSheet);
+}
+function helpSheet(){
+  var S2=[
+    ['book','このアプリでできること','フレンドとグループを作って、グループごとに旅のしおりを共有できます。予定・旅の情報・費用・持ち物を、メンバー全員がリアルタイムで編集できます。'],
+    ['sun','はじめに：ホーム画面に追加','Safariでアプリのページを開き、共有ボタンから「ホーム画面に追加」を選びます。以降はホーム画面のアイコンから開いてください（Safariとホーム画面アプリは記憶が別です）。'],
+    ['userplus','フレンドになる','「フレンド」タブで自分の合言葉をコピーして相手に送ります。相手が合言葉を入力して申請し、あなたが承認するとフレンドになります。同じグループのメンバーには、グループ画面から合言葉なしで申請できます。'],
+    ['people','グループ','ホームの「グループを作る」から、名前とメンバー（フレンド）を選んで作ります。グループ名をタップすると、メンバーの追加・グループ名の変更・削除ができます。メンバーは誰でも自分のフレンドを追加できます。後から入った人も、それまでのしおりを見られます。'],
+    ['plus','しおりを作る','各グループの「このグループでしおりを作る」から、旅の名前と日程を入れます。グループのメンバー全員のホームに表示されます。'],
+    ['cal','スケジュール','日ごとに予定を追加します。予定に旅の情報（宿など）を紐づけると、タップでその情報に移動できます。'],
+    ['ticket','旅の情報','宿・交通・観光などの情報をまとめます。金額には「割り勘」か支払う人を設定でき、費用タブの各人の予算に反映されます。画像は最大3枚：Googleドライブに写真を入れ、「リンクを知っている全員」が見られる共有設定にしてから、リンクをコピーして貼り付けます。'],
+    ['yen','費用と精算','実際に使ったお金を各自の家計簿として記録します。誰かの分を立て替えたときは、立替を設定してください。一番下の「精算」に、誰が誰に何円払えばよいかが表示されます。'],
+    ['list','準備','持ち物は人ごと、やることは全員共通で、担当者を決められます。'],
+    ['archive','思い出','旅行の終了から20日たつと、自動で「思い出」として保管され、閲覧のみになります。「編集できる状態に戻す」で再び編集でき、「JSONで保存」で記念にデータを保存できます。'],
+    ['palette','着せ替え','設定の「着せ替え」から見た目を選べます。スプラッシュ画面も変わります。このスマホだけに反映されます。'],
+    ['help','困ったとき','画面が更新されないときは、アプリを上スワイプで完全に終了してから開き直してください。機種変更やアプリの削除をすると、そのアカウントには入れなくなります（しおりのデータは残ります）。']
+  ];
+  openSheet('使い方','<div class="manual">'+S2.map(function(x,i){return '<details'+(i===0?' open':'')+'><summary><span class="srow-ic">'+ico(x[0],18)+'</span>'+x[1]+ico('chev',15)+'</summary><p>'+x[2]+'</p></details>';}).join('')+'</div>');
 }
 function pickChips(list,store){return '<div class="tchips">'+list.map(function(p){return '<button class="mw" data-pk="'+p.uid+'">'+pAv(p,20)+esc(p.name)+'</button>';}).join('')+'</div>';}
 function bindPick(el,store){el.querySelectorAll('[data-pk]').forEach(function(b){b.onclick=function(){store[b.dataset.pk]=!store[b.dataset.pk];b.classList.toggle('on',!!store[b.dataset.pk]);};});}
@@ -1365,7 +1639,13 @@ function groupSheet(gid){
   openSheet(g.name,'<div class="sec-h" style="margin:0 0 6px"><h2>メンバー</h2><span class="meta">'+g.members.length+'人</span></div><div class="frcard">'+rows+'</div>'+
     '<div class="hint" style="margin:8px 0 22px">同じグループのメンバーには、合言葉なしでフレンド申請できます。</div>'+
     '<div class="sec-h" style="margin:0 0 10px"><h2>メンバーを追加</h2></div>'+(cand.length?pickChips(cand)+'<button class="btn" id="gAdd" style="margin-top:12px">追加する</button>':'<div class="hint" style="margin-bottom:16px">追加できるフレンドがいません。</div>')+
-    '<div class="sec-h" style="margin:26px 0 10px"><h2>グループ名</h2></div><div class="addline" style="margin:0"><input id="gRn" maxlength="20" value="'+esc(g.name)+'"><button class="btn sm" id="gRnGo">変更</button></div>',function(el){
+    '<div class="sec-h" style="margin:26px 0 10px"><h2>グループ名</h2></div><div class="addline" style="margin:0"><input id="gRn" maxlength="20" value="'+esc(g.name)+'"><button class="btn sm" id="gRnGo">変更</button></div>'+
+    '<button class="btn danger" id="gDel" style="margin-top:28px">'+ico('trash',18)+'このグループを削除</button><div class="hint" style="margin-top:6px">中のしおり（'+g.trips.length+'件）と思い出もすべて削除され、メンバー全員の画面から消えます。</div>',function(el){
+    el.querySelector('#gDel').onclick=function(){
+      if(!confirm('「'+g.name+'」を削除しますか？\n中のしおり'+g.trips.length+'件もすべて削除され、元に戻せません。'))return;
+      if(g.trips.length&&!confirm('本当に削除しますか？メンバー全員の画面から消えます。'))return;
+      accApi({a:'groupDelete',gid:gid}).then(function(){closeSheet();renderHome();toast('削除しました');}).catch(function(e){toast(e.message);});
+    };
     bindPick(el,st);
     el.querySelectorAll('[data-freq]').forEach(function(b){b.onclick=function(){b.disabled=true;accApi({a:'friendReq',uid:b.dataset.freq}).then(function(){toast('申請しました');groupSheet(gid);}).catch(function(e){b.disabled=false;toast(e.message);});};});
     var ad=el.querySelector('#gAdd');if(ad)ad.onclick=function(){var p=picked(st);if(!p.length){toast('追加する人を選んでください');return;}ad.disabled=true;
@@ -1395,7 +1675,9 @@ function profileSheet(){
   });
 }
 function skinSheet(){
-  function pv(t){if(t.lock)return '<div class="pv pv-soon">COMING SOON</div>';if(t.id==='space')return '<div class="pv pv-space"><div class="mn"></div><div class="h">旅のしおり</div><div class="c"></div></div>';return '<div class="pv pv-ryokan"><div class="h">旅のしおり</div><div class="c"></div></div>';}
+  function pv(t){if(t.lock)return '<div class="pv pv-soon">COMING SOON</div>';
+    if(t.pv)return '<div class="pv" style="background:'+t.pv.bg+'"><div class="h" style="background:'+t.pv.head+';font-family:'+t.pv.font+'">旅のしおり</div><div class="c"></div></div>';
+    if(t.id==='space')return '<div class="pv pv-space"><div class="mn"></div><div class="h">旅のしおり</div><div class="c"></div></div>';return '<div class="pv pv-ryokan"><div class="h">旅のしおり</div><div class="c"></div></div>';}
   openSheet('着せ替え','<div class="hint" style="margin:0 0 14px">選ぶとすぐに切り替わります。スプラッシュ画面も着せ替えに合わせて変わります。このスマホだけに反映されます。</div><div class="skins">'+
     THEMES.map(function(t){return '<button class="skin'+(t.id===S.theme?' on':'')+(t.lock?' lock':'')+'" data-skin="'+t.id+'"'+(t.lock?' disabled':'')+'>'+pv(t)+'<span class="ok">使用中</span><span class="meta"><b>'+t.name+'</b><small>'+t.desc+'</small></span></button>';}).join('')+'</div>',function(el){
     el.querySelectorAll('[data-skin]').forEach(function(b){b.onclick=function(){if(b.disabled||b.dataset.skin===S.theme)return;applyTheme(b.dataset.skin);closeSheet();renderHome();showSplash(1300);};});

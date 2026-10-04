@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<meta name="apple-mobile-web-app-title" content="しおり">
+<meta name="theme-color" content="#3F5D63">
+<title>旅のしおり</title>
+<script>try{var _s=JSON.parse(localStorage.getItem('shiori_v1')||'{}');document.documentElement.setAttribute('data-theme',_s.theme==='space'?'space':'ryokan');}catch(e){document.documentElement.setAttribute('data-theme','ryokan');}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&family=Orbitron:wght@500;700&family=Murecho:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#5F7F86; --pink-d:#43626A; --petal:#E3ECEC; --blush:#F4F6F6;
+  --line:#D2DDDD; --ink:#26333A; --sub:#6C7C80; --white:#fff; --mint:#2F9E8F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  font-family:'Noto Sans JP',-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;
+  background:var(--blush); color:var(--ink); font-size:15px; line-height:1.6;
+  -webkit-tap-highlight-color:transparent; -webkit-text-size-adjust:100%;
+}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--pink);outline-offset:2px;border-radius:6px}
+.i{display:block;flex-shrink:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{touch-action:manipulation}
+#app{position:fixed;top:0;bottom:0;left:0;right:0;max-width:560px;margin:0 auto;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none}
+/* iOSホーム画面アプリで画面の下端が届かない問題の対策 */
+/* 画像・ジャンプ・精算 */
+.thumbs{display:flex;gap:8px;margin-top:10px}
+.thumbs button{flex:0 0 auto;width:84px;height:84px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--petal);color:var(--sub);font-size:10px;line-height:1.3}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(20,28,32,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.lb img{max-width:100%;max-height:72vh;border-radius:10px;object-fit:contain}
+.lb .lb-msg{color:#fff;font-size:13px;text-align:center;line-height:1.7}
+.lb .lb-row{display:flex;gap:10px}
+.lb a,.lb button{font:inherit;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;border:0;text-decoration:none}
+.lb a{background:#fff;color:var(--pink-d)}
+.lb button{background:rgba(255,255,255,.18);color:#fff}
+button.chip{border:0;font:inherit;font-size:12px;cursor:pointer}
+.card.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px #d8c49a}100%{box-shadow:0 0 0 0 transparent}}
+.payer{font-size:11px;font-weight:700;color:var(--sub);margin-left:6px}
+
+html,body{background:#fff}
+#app{background:var(--blush)}
+html.shim nav{padding-bottom:0}
+
+/* ---------- header (ticket) ---------- */
+.ticket{
+  position:relative;background:var(--pink);color:#fff;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 20px 30px;
+}
+.ticket::after{
+  content:'';position:absolute;left:0;right:0;bottom:-8px;height:16px;
+  background:radial-gradient(circle at 8px 8px,var(--blush) 5px,transparent 5.5px) repeat-x;
+  background-size:16px 16px;
+}
+.hrow{display:flex;align-items:center;justify-content:space-between;height:40px}
+.brand{font-size:12px;font-weight:700;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hbtns{display:flex;gap:4px;align-items:center}
+.hbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center}
+.hbtn:active{background:rgba(255,255,255,.18)}
+.hmain{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:6px}
+.ticket h1{margin:0;font-size:28px;font-weight:900;line-height:1.25;word-break:break-word}
+.dates{font-size:13px;font-weight:500;opacity:.9;margin-top:6px}
+.stamp{
+  flex-shrink:0;width:84px;height:84px;border-radius:50%;
+  border:2px dashed rgba(255,255,255,.85);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;transform:rotate(-8deg);line-height:1.1;
+}
+.stamp small{font-size:11px;font-weight:700}
+.stamp b{font-size:30px;font-weight:900}
+.stamp.word b{font-size:15px}
+
+.ro-bar{
+  margin:18px 16px 0;padding:12px 14px;border-radius:14px;background:var(--white);
+  border:1px solid var(--line);display:flex;align-items:center;gap:10px;font-size:13px;
+}
+.ro-bar span{flex:1;color:var(--sub)}
+
+/* ---------- main ---------- */
+main{flex:1;padding:22px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+.sec{margin-bottom:28px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:0 4px 10px}
+.sec-h h2{margin:0;font-size:17px;font-weight:900}
+.sec-h .meta{font-size:12px;color:var(--sub);font-weight:500}
+
+/* schedule */
+.day{margin-bottom:26px}
+.dayhead{display:flex;align-items:baseline;gap:10px;margin:0 4px 12px}
+.dnum{font-size:20px;font-weight:900;color:var(--pink)}
+.ddate{font-size:14px;font-weight:700}
+.tl{position:relative;padding-left:0}
+.tl::before{content:'';position:absolute;left:69px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
+.ev{display:grid;grid-template-columns:52px 36px 1fr;gap:0;align-items:start;padding:6px 0;position:relative}
+.evtime{font-size:14px;font-weight:700;text-align:right;padding-right:6px;padding-top:8px;font-variant-numeric:tabular-nums}
+.evtime small{display:block;font-size:11px;color:var(--sub);font-weight:500}
+.evdot{
+  width:32px;height:32px;margin:2px 2px 0;border-radius:50%;background:var(--white);
+  border:2px solid var(--line);display:grid;place-items:center;color:var(--pink);position:relative;z-index:1;
+}
+.evbody{
+  background:var(--white);border-radius:14px;padding:10px 12px;margin-left:6px;
+  border:1px solid var(--line);text-align:left;width:calc(100% - 6px);
+}
+.evtitle{font-weight:700;font-size:15px;line-height:1.45}
+.evmemo{font-size:13px;color:var(--sub);margin-top:2px;white-space:pre-wrap}
+.ev.now .evdot{background:var(--pink);border-color:var(--pink);color:#fff}
+.ev.now .evbody{border:2px solid var(--pink)}
+.nowtag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--pink);border-radius:999px;padding:1px 8px;margin-bottom:4px}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;max-width:100%;
+  font-size:12px;font-weight:500;padding:5px 10px;border-radius:999px;
+  background:var(--petal);color:var(--pink-d);text-decoration:none;
+}
+.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.addrow{
+  display:flex;align-items:center;gap:8px;margin:6px 0 0 88px;padding:8px 12px;
+  border:1.5px dashed var(--line);border-radius:12px;color:var(--pink-d);font-size:13px;font-weight:700;
+  width:calc(100% - 88px);
+}
+.addrow:active{background:var(--petal)}
+
+/* info */
+.cat-h{display:flex;align-items:center;gap:8px;margin:0 4px 10px;color:var(--pink-d)}
+.cat-h h3{margin:0;font-size:15px;font-weight:900;color:var(--ink)}
+.cat-h .cnt{font-size:12px;color:var(--sub)}
+.card{
+  display:block;width:100%;text-align:left;background:var(--white);
+  border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;
+}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card-name{font-weight:700;font-size:15px}
+.card-cost{font-weight:900;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.card-row{display:flex;gap:6px;align-items:flex-start;font-size:13px;color:var(--sub);margin-top:6px}
+.card-row .i{margin-top:2px;color:var(--pink)}
+
+/* money */
+.big{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:16px}
+.bars{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:56px 1fr 84px;align-items:center;gap:8px;font-size:13px}
+.bar-t{height:8px;background:var(--petal);border-radius:8px;overflow:hidden}
+.bar-t i{display:block;height:100%;background:var(--pink);border-radius:8px}
+.bar b{text-align:right;font-variant-numeric:tabular-nums}
+.diff{font-size:13px;font-weight:700;margin-top:4px}
+.diff.over{color:var(--pink-d)} .diff.under{color:var(--mint)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 2px;border-bottom:1px solid var(--petal);width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+.row .t{font-weight:700}
+.row .s{font-size:12px;color:var(--sub)}
+.row .a{font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sub-panel{background:transparent;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px}
+.who{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.18);font-size:12px;font-weight:700}
+.welcome .note{font-size:12px;color:var(--sub);margin:-8px 0 18px}
+.mchips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.mchip{display:inline-flex;align-items:center;gap:4px;padding:5px 6px 5px 12px;border-radius:999px;background:var(--white);border:1px solid var(--line);font-size:13px;font-weight:700}
+.mchip button{width:22px;height:22px;display:grid;place-items:center;color:var(--sub);border-radius:50%}
+.settle{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--petal);font-size:14px}
+.settle:last-child{border-bottom:0}
+.settle .arrow{color:var(--pink)}
+.settle b{margin-left:auto;font-variant-numeric:tabular-nums}
+.hint{font-size:13px;color:var(--sub)}
+.ptable{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.ptable th{font-weight:500;color:var(--sub);text-align:right;padding:4px 0}
+.ptable th:first-child,.ptable td:first-child{text-align:left}
+.ptable td{padding:6px 0;text-align:right;font-variant-numeric:tabular-nums;border-top:1px solid var(--petal)}
+
+/* prep */
+.prog{height:6px;background:var(--petal);border-radius:6px;overflow:hidden;margin:0 4px 10px}
+.prog i{display:block;height:100%;background:var(--pink);transition:width .25s}
+.chk{display:flex;align-items:center;gap:12px;padding:11px 12px;background:var(--white);border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.box{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff;flex-shrink:0;transition:background .15s,border-color .15s}
+.chk.done .box{background:var(--pink);border-color:var(--pink)}
+.chk .txt{flex:1;text-align:left;font-size:15px}
+.chk.done .txt{color:var(--sub);text-decoration:line-through}
+.chk .del{width:30px;height:30px;display:grid;place-items:center;color:var(--sub);border-radius:50%}
+.addline{display:flex;gap:8px;margin-top:4px}
+.addline input{flex:1}
+.addline .own{white-space:nowrap;padding:0 12px;border-radius:12px;border:1.5px solid var(--line);font-size:12px;font-weight:700;color:var(--sub);background:var(--blush)}
+.addline .own.on{border-color:var(--pink);color:var(--pink-d);background:#fff}
+.otag{display:inline-block;font-size:11px;font-weight:700;color:var(--pink-d);background:var(--petal);border-radius:999px;padding:0 8px;margin-left:6px;text-decoration:none;vertical-align:1px}
+.shrow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.shrow b{width:5.5em;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.shrow input{flex:1}
+.ptable tr[data-mem]{cursor:pointer}
+.ptable tr[data-mem] td:first-child{color:var(--pink-d);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.net{font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
+.net small{font-size:13px;font-weight:700;margin-right:6px;color:var(--sub)}
+
+/* fab & nav */
+.fab{
+  position:fixed;right:max(18px,calc(50% - 262px));bottom:calc(80px + env(safe-area-inset-bottom,0px));
+  width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;
+  display:grid;place-items:center;box-shadow:0 6px 18px rgba(67,98,106,.3);z-index:20;
+}
+.fab:active{background:var(--pink-d)}
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--white);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+nav .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 8px;font-size:11px;font-weight:700;color:var(--sub)}
+nav button.on{color:var(--pink)}
+
+/* forms & sheet */
+label.f{display:block;margin-bottom:14px}
+label.f>span{display:block;font-size:12px;font-weight:700;color:var(--sub);margin-bottom:5px}
+input,select,textarea{
+  width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--blush);
+  border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;outline:none;-webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--pink);background:#fff}
+textarea{min-height:76px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.seg button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border-radius:12px;border:1.5px solid var(--line);font-size:11px;font-weight:700;color:var(--sub);background:var(--blush)}
+.seg button.on{border-color:var(--pink);color:var(--pink);background:#fff}
+.tchips{display:flex;flex-wrap:wrap;gap:6px}
+.tchips button{padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);font-size:13px;font-weight:700;color:var(--sub);background:var(--blush)}
+.tchips button.on{border-color:var(--pink);background:var(--pink);color:#fff}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:13px;border-radius:14px;background:var(--pink);color:#fff;font-weight:700;font-size:15px}
+.btn:active{background:var(--pink-d)}
+.btn.ghost{background:transparent;color:var(--pink-d);border:1.5px solid var(--line)}
+.btn.danger{background:transparent;color:var(--pink-d);margin-top:10px}
+.btn.sm{width:auto;padding:9px 14px;font-size:13px;border-radius:12px}
+.sheet-bg{position:fixed;inset:0;background:rgba(38,51,58,.42);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .2s}
+.sheet-bg.on{opacity:1}
+.sheet{
+  width:100%;max-width:560px;max-height:88vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;
+  padding:8px 18px calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(24px);transition:transform .22s;
+}
+.sheet-bg.on .sheet{transform:none}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:4px auto 6px}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sheet-h h2{margin:0;font-size:18px;font-weight:900}
+.ib{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;color:var(--sub)}
+.tlist .row{cursor:pointer}
+.cur{font-size:11px;font-weight:700;color:#fff;background:var(--pink);border-radius:999px;padding:1px 8px}
+
+.empty{text-align:center;padding:30px 16px;color:var(--sub);font-size:14px}
+.empty .i{margin:0 auto 10px;color:var(--line)}
+.welcome{padding:calc(env(safe-area-inset-top,0px) + 48px) 22px 40px}
+.welcome h1{font-size:30px;font-weight:900;margin:0 0 6px;color:var(--pink)}
+.welcome p{color:var(--sub);margin:0 0 28px}
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===== luxe (A案) ===== */
+:root{
+  --pink:#3F5D63; --pink-d:#2F474C; --petal:#EAEFEE; --blush:#F7F6F2;
+  --line:#DDE1DC; --ink:#232D2C; --sub:#6F7A78; --gold:#A98F5B; --gold-l:#CDBB91;
+  --serif:'Shippori Mincho','Hiragino Mincho ProN','Yu Mincho',serif;
+}
+body{letter-spacing:.02em}
+.ticket h1,.sec-h h2,.dnum,.big,.net,.stamp b,.welcome h1,.sheet-h h2,.cat-h h3,.card-name,.evtitle{font-family:var(--serif)}
+.ticket{background:var(--pink);padding-bottom:34px}
+.ticket::after{background:none;height:0;left:20px;right:20px;bottom:16px;border-top:1px solid var(--gold-l);opacity:.75}
+.brand{color:var(--gold-l);opacity:1;letter-spacing:.18em;font-weight:500}
+.ticket h1{font-weight:600;font-size:29px;letter-spacing:.06em}
+.dates{letter-spacing:.08em;opacity:.85}
+.stamp{transform:none;border:1px solid var(--gold-l);outline:1px solid rgba(205,187,145,.45);outline-offset:3px;width:78px;height:78px}
+.stamp small{font-weight:500;letter-spacing:.1em;font-size:10px;color:var(--gold-l)}
+.stamp b{font-weight:600;font-size:28px}
+.stamp.word b{font-size:14px;letter-spacing:.1em}
+.who{background:transparent;border:1px solid rgba(205,187,145,.6);color:#fff;border-radius:4px;font-weight:500}
+main{padding-top:28px}
+.sec-h{border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.sec-h h2{font-weight:600;font-size:18px;letter-spacing:.06em}
+.sec-h .meta{letter-spacing:.06em}
+.dayhead{border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.dnum{font-weight:600;font-size:21px;color:var(--pink);letter-spacing:.04em}
+.ddate{font-weight:500;color:var(--sub);letter-spacing:.06em}
+.ddate::before{content:'';display:inline-block;width:14px;height:1px;background:var(--gold);vertical-align:middle;margin-right:10px}
+.tl::before{width:1px;background:var(--gold-l);left:70px}
+.evtime{font-weight:500;letter-spacing:.04em}
+.evdot{border:1px solid var(--gold-l);background:var(--blush)}
+.evbody{border-radius:6px;border-color:var(--line);background:#fff}
+.evtitle{font-weight:600;letter-spacing:.03em}
+.ev.now .evdot{background:var(--pink);border-color:var(--gold);color:#fff}
+.ev.now .evbody{border:1px solid var(--gold);box-shadow:inset 3px 0 0 var(--gold)}
+.nowtag{background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:3px;font-weight:500;letter-spacing:.1em}
+.chip{border-radius:3px;background:transparent;border:1px solid var(--line);color:var(--pink);font-weight:500}
+.addrow{border:1px dashed var(--gold-l);border-radius:6px;color:var(--pink);font-weight:500;letter-spacing:.06em}
+.cat-h{color:var(--gold)}
+.cat-h h3{font-weight:600;letter-spacing:.06em}
+.card,.panel,.chk{border-radius:6px;border-color:var(--line)}
+.card-name{font-weight:600;letter-spacing:.03em}
+.card-cost{font-family:var(--serif);font-weight:600}
+.big{font-weight:600;letter-spacing:.02em}
+.bar-t{height:3px;border-radius:0;background:var(--line)}
+.bar-t i{border-radius:0;background:var(--gold)}
+.sub-panel{border:1px solid var(--line);border-radius:6px;background:#fff}
+.row .a,.settle b{font-family:var(--serif);font-weight:600}
+.prog{height:2px;border-radius:0;background:transparent;margin:-16px 0 16px;position:relative}
+.ev{grid-template-columns:52px 36px minmax(0,1fr)}
+.evbody{width:auto;min-width:0}
+.chip{max-width:100%}
+.prog i{background:var(--gold)}
+.box{border:1px solid var(--gold-l);border-radius:4px;width:24px;height:24px}
+.chk.done .box{background:var(--pink);border-color:var(--pink)}
+.tchips button,.seg button{border-radius:4px;border-width:1px;background:#fff;font-weight:500}
+.tchips button.on{background:var(--pink);border-color:var(--pink)}
+.seg button.on{border-color:var(--gold);color:var(--pink)}
+.mchip{border-radius:4px;font-weight:500}
+.btn{border-radius:6px;font-weight:500;letter-spacing:.1em}
+.btn.ghost{border-width:1px;border-color:var(--gold-l);color:var(--pink)}
+.btn.danger{color:#8A4B45;letter-spacing:.06em}
+.addline .own{border-radius:4px;border-width:1px}
+input,select,textarea{border-radius:6px;border-width:1px;background:#fff}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.fab{border-radius:50%;background:var(--pink);box-shadow:0 0 0 1px var(--gold-l) inset,0 4px 14px rgba(35,45,44,.18)}
+nav{border-top:1px solid var(--line)}
+nav button{font-weight:500;letter-spacing:.06em;position:relative}
+nav button.on{color:var(--pink)}
+nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;height:1px;background:var(--gold)}
+.sheet{border-radius:12px 12px 0 0}
+.sheet-h h2{font-weight:600;letter-spacing:.06em}
+.welcome h1{font-weight:600;color:var(--pink);letter-spacing:.1em}
+.welcome h1::after{content:'';display:block;width:36px;height:1px;background:var(--gold);margin-top:14px}
+.otag{border-radius:3px;background:transparent;border:1px solid var(--gold-l);color:var(--gold)}
+.cur{background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:3px}
+.toast{border-radius:4px;letter-spacing:.06em}
+
+/* today & online */
+.online{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;letter-spacing:.06em;color:var(--gold-l)}
+.online:empty{display:none}
+.online .dot{width:7px;height:7px;border-radius:50%;background:#9FD3A8;box-shadow:0 0 0 3px rgba(159,211,168,.22)}
+.today{background:var(--pink);color:#fff;border:1px solid var(--gold-l);border-radius:6px;padding:16px 18px 14px;margin-bottom:28px}
+.today-h{font-size:11px;letter-spacing:.2em;color:var(--gold-l)}
+.today-l{font-size:12px;letter-spacing:.08em;opacity:.8;margin-top:10px}
+.today-c{font-family:var(--serif);font-size:15px;line-height:1.2}
+.today-c b{font-size:36px;font-weight:600;margin:0 4px;letter-spacing:.02em}
+.today-n{font-family:var(--serif);font-size:18px;font-weight:600;margin-top:8px;letter-spacing:.04em}
+.today-n span{font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:500;color:var(--gold-l);margin-right:10px}
+.today .chip{color:#fff;border-color:rgba(205,187,145,.55)}
+.today-p{font-size:12px;opacity:.85;margin-top:12px;padding-top:9px;border-top:1px solid rgba(205,187,145,.35);letter-spacing:.04em}
+.asg{flex-shrink:0;font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--pink);border:1px solid var(--gold-l);border-radius:4px;padding:3px 9px;max-width:7em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.asg.none{color:var(--sub);border-style:dashed;border-color:var(--line)}
+.chk.done .asg{opacity:.55}
+
+/* splash */
+#splash{position:fixed;inset:0;z-index:999;background:#3F5D63;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
+#splash.out{opacity:0;pointer-events:none}
+#splash svg{width:64px;height:auto;opacity:0;animation:spIn .9s ease .1s forwards}
+#splash .t{font-family:var(--serif);color:#fff;font-size:22px;font-weight:600;letter-spacing:.32em;padding-left:.32em;opacity:0;animation:spIn .9s ease .35s forwards}
+#splash .r{width:0;height:1px;background:#CDBB91;animation:spLine .8s ease .55s forwards}
+@keyframes spIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes spLine{to{width:48px}}
+@media (prefers-reduced-motion:reduce){#splash svg,#splash .t{animation:none;opacity:1}#splash .r{animation:none;width:48px}}
+
+.av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--petal);color:var(--pink);border:1px solid var(--gold-l);font-family:var(--serif);font-weight:600;line-height:1}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.mw{display:inline-flex;align-items:center;gap:6px}
+.tchips button.mw{padding-left:6px}
+.tchips button.on .av{border-color:#fff}
+.who .av{border-color:rgba(205,187,145,.8)}
+.asg{display:inline-flex;align-items:center;gap:5px}
+.mchip{padding-left:4px;gap:6px}
+.mchip .avb{width:auto;height:auto}
+.online .av{margin-right:-4px;border-color:rgba(205,187,145,.8)}
+.online span{margin-left:8px}
+
+
+/* 費用タブ 見た目調整 */
+.cap{font-size:11px;color:var(--sub);letter-spacing:.1em;margin-bottom:2px}
+.big{font-size:26px}
+.net{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--petal);font-size:13px;font-family:inherit}
+.net:last-child{border-bottom:0}
+.net span{display:flex;align-items:center;gap:8px}
+.net b{font-family:var(--serif);font-weight:500;font-size:15px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.net small{font-size:10px;letter-spacing:.1em;color:var(--sub);margin-right:8px;font-family:inherit;font-weight:500}
+.net .plus{color:var(--gold)}
+.pays{margin-top:12px;padding-top:12px;border-top:1px solid var(--gold-l)}
+.pays .p{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0}
+.pays .p i{flex:1;height:1px;background:var(--gold-l);position:relative;min-width:16px}
+.pays .p i:after{content:'';position:absolute;right:0;top:-3px;width:6px;height:6px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);transform:rotate(45deg)}
+.pays .p b{font-family:var(--serif);font-weight:500;font-size:15px;margin-left:6px}
+/* ===== 宇宙テーマ ===== */
+html[data-theme=space]{
+  --pink:#8C7BFF;--pink-d:#B3A6FF;--white:rgba(255,255,255,.05);--petal:rgba(140,123,255,.14);--blush:#070B1F;
+  --line:rgba(170,175,255,.18);--ink:#ECEEFF;--sub:#9AA2CC;--gold:#6FE7F2;--gold-l:#A99CFF;
+  --serif:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;--orb:'Orbitron','Murecho','Hiragino Sans',sans-serif;
+  color-scheme:dark;
+}
+html[data-theme=space],html[data-theme=space] body{background:#070B1F;color:var(--ink)}
+html[data-theme=space] body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 78% 8%,#fff 50%,transparent 51%),
+   radial-gradient(1.5px 1.5px at 42% 36%,#cfd6ff 50%,transparent 51%),radial-gradient(1px 1px at 88% 44%,#fff 50%,transparent 51%),
+   radial-gradient(1px 1px at 22% 62%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 65% 72%,#bfefff 50%,transparent 51%),
+   radial-gradient(1px 1px at 8% 88%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 52% 92%,#fff 50%,transparent 51%),
+   radial-gradient(1px 1px at 93% 82%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 33% 12%,#fff 50%,transparent 51%),
+   radial-gradient(600px 400px at 85% 30%,rgba(140,123,255,.18),transparent 70%),
+   radial-gradient(500px 380px at 5% 75%,rgba(111,231,242,.10),transparent 70%),#070B1F;
+  animation:twinkle 6s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.75}to{opacity:1}}
+html[data-theme=space] #app{background:transparent;z-index:1}
+html[data-theme=space] .ticket{background:linear-gradient(160deg,#1A1550 0%,#2B1D6B 55%,#0F2A4A 100%);position:relative;overflow:hidden}
+html[data-theme=space] .ticket::before{content:'';position:absolute;right:-60px;top:-70px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#B9AEFF,#5B47D6 55%,#1E1460 100%);opacity:.35;box-shadow:0 0 60px rgba(140,123,255,.5);pointer-events:none}
+html[data-theme=space] .ticket::after{border-top:1px solid rgba(111,231,242,.35)}
+html[data-theme=space] .ticket h1{font-family:var(--serif);font-weight:700;letter-spacing:.08em;text-shadow:0 0 18px rgba(169,156,255,.55)}
+html[data-theme=space] .brand{color:var(--gold);letter-spacing:.2em}
+html[data-theme=space] .stamp{border:1px solid rgba(111,231,242,.7);outline:1px dashed rgba(169,156,255,.5);outline-offset:5px;border-radius:50%;
+  background:rgba(7,11,31,.35);box-shadow:0 0 22px rgba(111,231,242,.35),inset 0 0 14px rgba(111,231,242,.2)}
+html[data-theme=space] .stamp b{font-family:var(--orb);font-weight:700;color:#fff;text-shadow:0 0 10px var(--gold)}
+html[data-theme=space] .stamp small{color:var(--gold)}
+html[data-theme=space] .who{border-color:rgba(111,231,242,.5);background:rgba(7,11,31,.3);border-radius:999px}
+html[data-theme=space] .dnum,html[data-theme=space] .big,html[data-theme=space] .card-cost,html[data-theme=space] .net b,html[data-theme=space] .pays .p b,html[data-theme=space] .row .a,html[data-theme=space] .evtime{font-family:var(--orb);letter-spacing:.04em}
+html[data-theme=space] .dnum{color:var(--gold);text-shadow:0 0 12px rgba(111,231,242,.5)}
+html[data-theme=space] .big{color:#fff;text-shadow:0 0 14px rgba(140,123,255,.6)}
+html[data-theme=space] .ddate::before{background:var(--gold)}
+html[data-theme=space] .tl::before{background:linear-gradient(var(--gold),var(--pink));opacity:.6}
+html[data-theme=space] .evdot{background:#0D1233;border-color:var(--gold-l);color:var(--gold);box-shadow:0 0 10px rgba(169,156,255,.4)}
+html[data-theme=space] .evbody,html[data-theme=space] .card,html[data-theme=space] .panel,html[data-theme=space] .sub-panel,html[data-theme=space] .chk{
+  background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+html[data-theme=space] .ev.now .evbody{border-color:var(--gold);box-shadow:0 0 18px rgba(111,231,242,.25),inset 3px 0 0 var(--gold)}
+html[data-theme=space] .chip{color:var(--gold-l);border-color:var(--line);border-radius:999px}
+html[data-theme=space] .addrow{border-color:rgba(169,156,255,.4);color:var(--gold-l);border-radius:14px}
+html[data-theme=space] .cat-h{color:var(--gold)}
+html[data-theme=space] .sec-h,html[data-theme=space] .dayhead{border-bottom-color:var(--line)}
+html[data-theme=space] .bar-t{background:rgba(255,255,255,.08);height:4px;border-radius:4px}
+html[data-theme=space] .bar-t i{background:linear-gradient(90deg,var(--pink),var(--gold));border-radius:4px;box-shadow:0 0 8px rgba(111,231,242,.5)}
+html[data-theme=space] .net .plus{color:var(--gold)}
+html[data-theme=space] .pays{border-top-color:var(--line)}
+html[data-theme=space] .pays .p i{background:linear-gradient(90deg,var(--pink),var(--gold))}
+html[data-theme=space] .pays .p i:after{border-color:var(--gold)}
+html[data-theme=space] .av{background:#1A1550;color:var(--gold);border-color:var(--gold-l)}
+html[data-theme=space] nav{background:rgba(9,13,38,.88);border-top:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+html[data-theme=space] nav button.on{color:var(--gold);text-shadow:0 0 10px rgba(111,231,242,.6)}
+html[data-theme=space] .fab{background:linear-gradient(135deg,#8C7BFF,#4A9BFF);border-color:var(--gold);box-shadow:0 0 24px rgba(140,123,255,.6)}
+html[data-theme=space] .tchips button,html[data-theme=space] .seg button{background:rgba(255,255,255,.04);color:var(--sub);border-color:var(--line)}
+html[data-theme=space] .tchips button.on{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 0 12px rgba(140,123,255,.5)}
+html[data-theme=space] .seg button.on{background:rgba(140,123,255,.18);color:#fff;border-color:var(--pink)}
+html[data-theme=space] .sheet{background:#0E1335;color:var(--ink);border-top:1px solid var(--line)}
+html[data-theme=space] input,html[data-theme=space] select,html[data-theme=space] textarea{background:rgba(255,255,255,.05);color:var(--ink);border-color:var(--line)}
+html[data-theme=space] input:focus,html[data-theme=space] textarea:focus,html[data-theme=space] select:focus{background:rgba(255,255,255,.08);border-color:var(--gold)}
+html[data-theme=space] .btn{background:linear-gradient(135deg,#8C7BFF,#4A9BFF)}
+html[data-theme=space] .thumbs button{border-color:var(--line)}
+html[data-theme=space] .card.flash{animation:flashS 1.6s ease}
+@keyframes flashS{0%,40%{box-shadow:0 0 0 2px var(--gold),0 0 24px rgba(111,231,242,.6)}100%{box-shadow:none}}
+
+/* 宇宙テーマ v2：銀河背景＋全体フォント */
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+html[data-theme=space] body::before{display:none}
+html[data-theme=space],html[data-theme=space] body,html[data-theme=space] button,html[data-theme=space] input,html[data-theme=space] textarea,html[data-theme=space] select{font-family:var(--orb)}
+html[data-theme=space] .ticket h1,html[data-theme=space] .sec-h h2,html[data-theme=space] .card-name,html[data-theme=space] .evtitle,html[data-theme=space] .cat-h h3,html[data-theme=space] .sheet-h h2,html[data-theme=space] .welcome h1{font-family:var(--orb)}
+html[data-theme=space] .ticket{background:linear-gradient(160deg,rgba(26,21,80,.82),rgba(43,29,107,.7) 55%,rgba(15,42,74,.75))}
+
+html[data-theme=space] .evbody,html[data-theme=space] .card,html[data-theme=space] .panel,html[data-theme=space] .sub-panel,html[data-theme=space] .chk{background:rgba(8,10,34,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme=space] .addrow{background:rgba(8,10,34,.45)}
+
+html[data-theme=space] .ticket::before{right:-40px;top:-50px;width:170px;height:170px;opacity:.9;
+  background:
+   radial-gradient(circle at 30% 38%,rgba(150,150,170,.35) 0 9%,transparent 10%),
+   radial-gradient(circle at 58% 62%,rgba(150,150,170,.30) 0 7%,transparent 8%),
+   radial-gradient(circle at 45% 28%,rgba(150,150,170,.25) 0 4%,transparent 5%),
+   radial-gradient(circle at 66% 36%,rgba(150,150,170,.22) 0 5%,transparent 6%),
+   radial-gradient(circle at 36% 70%,rgba(150,150,170,.22) 0 4%,transparent 5%),
+   radial-gradient(circle at 40% 40%,#FFFFFF,#E9ECF5 45%,#B9BFD3 80%,#8E95AE 100%);
+  box-shadow:0 0 40px rgba(255,255,255,.35),0 0 90px rgba(200,210,255,.25)}
+
+html[data-theme=space] .ticket::before{right:-34px;top:-38px;width:120px;height:120px;opacity:.6;z-index:0}
+html[data-theme=space] .ticket>*{position:relative;z-index:1}
+html[data-theme=space] .ddate,html[data-theme=space] .sec-h .meta,html[data-theme=space] .dnum,html[data-theme=space] .sec-h h2,html[data-theme=space] .cat-h{text-shadow:0 0 6px #05071A,0 0 12px #05071A}
+
+/* ===== アカウント・ホーム ===== */
+body.sp #app{visibility:hidden}
+#splash .sp-moon{display:none}
+html[data-theme=space] #splash{background:transparent}
+html[data-theme=space] #splash svg{display:none}
+html[data-theme=space] #splash .sp-moon{display:block;width:84px;height:84px;border-radius:50%;opacity:0;animation:spIn .9s ease .1s forwards;
+  background:radial-gradient(circle at 30% 38%,rgba(150,150,170,.35) 0 9%,transparent 10%),radial-gradient(circle at 58% 62%,rgba(150,150,170,.3) 0 7%,transparent 8%),radial-gradient(circle at 66% 36%,rgba(150,150,170,.22) 0 5%,transparent 6%),radial-gradient(circle at 40% 40%,#fff,#E9ECF5 45%,#B9BFD3 80%,#8E95AE);
+  box-shadow:0 0 40px rgba(255,255,255,.35),0 0 90px rgba(200,210,255,.25)}
+html[data-theme=space] #splash .t{font-family:var(--orb);text-shadow:0 0 18px rgba(169,156,255,.8)}
+html[data-theme=space] #splash .r{background:linear-gradient(90deg,#8C7BFF,#6FE7F2)}
+.hme{display:flex;align-items:center;gap:14px}
+.hme small{display:block;font-size:11px;opacity:.75;letter-spacing:.12em}
+.hme h1{margin:0}
+.bell{position:relative}.bell i{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#E8A35B;display:none}.bell.has i{display:block}
+.back{margin-left:-10px}
+.hrow .lft{display:flex;align-items:center;gap:2px;min-width:0}
+.grp{margin:4px 0 28px}
+.grp-h{display:flex;align-items:center;gap:10px;width:100%;padding:0 0 10px;margin-bottom:12px;border-bottom:1px solid var(--line);text-align:left;color:var(--ink)}
+.grp-h h2{margin:0;font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.06em;flex:1;min-width:0}
+.grp-h .i{color:var(--sub)}
+.mav{display:flex;padding-left:6px}.mav .av{margin-left:-6px;border:1.5px solid var(--blush)}
+.hcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.hcard .t{flex:1;min-width:0}
+.hcard b{display:block;font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:.03em}
+.hcard small{display:block;font-size:12px;color:var(--sub);margin-top:2px}
+.mstamp{width:58px;height:58px;border-radius:50%;border:1px solid var(--gold-l);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.mstamp em{font-style:normal;font-size:9px;color:var(--sub);line-height:1.3}
+.mstamp strong{font-family:var(--serif);font-size:20px;line-height:1.1;font-weight:600}
+.htag{display:inline-block;font-size:10px;letter-spacing:.08em;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--sub);white-space:nowrap}
+.dashed{display:block;width:100%;padding:12px;border:1px dashed var(--gold-l);border-radius:14px;color:var(--pink);font-weight:700;font-size:13px;letter-spacing:.06em;text-align:center}
+.hempty{padding:28px 6px;color:var(--sub);font-size:13px;line-height:1.9;text-align:center}
+.codebox{border:1px solid var(--gold-l);border-radius:16px;padding:20px;text-align:center;background:var(--white)}
+.codebox small{display:block;font-size:11px;color:var(--sub);letter-spacing:.14em;margin-bottom:8px}
+.codebox b{display:block;font-family:var(--serif);font-size:24px;letter-spacing:.1em;font-weight:600;color:var(--pink);margin-bottom:12px}
+.frcard{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
+.frow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--petal)}
+.frow:last-child{border-bottom:0}
+.frow b{flex:1;font-weight:500;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frow .st{font-size:11px;color:var(--sub)}
+.btn.xs{width:auto;padding:7px 14px;font-size:12px;margin:0;min-height:0;height:auto}
+.btn.xs.ghost{border:1px solid var(--line)}
+.photo{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.skins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.skin{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--white);text-align:left;padding:0;position:relative;color:var(--ink)}
+.skin.on{border:2px solid var(--gold);box-shadow:0 0 0 3px var(--petal)}
+.skin .pv{height:110px;position:relative;overflow:hidden}
+.skin .meta{padding:10px 12px 12px;display:block}
+.skin .meta b{display:block;font-size:14px;font-weight:700}
+.skin .meta small{font-size:11px;color:var(--sub)}
+.skin .ok{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;display:none}
+.skin.on .ok{display:block}
+.skin.lock{opacity:.5}
+.pv-ryokan{background:#F7F6F2}
+.pv-ryokan .h{height:46px;background:#3F5D63;padding:10px;color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.1em}
+.pv-ryokan .h:after{content:'';display:block;width:28px;height:1px;background:#A98F5B;margin-top:6px}
+.pv-ryokan .c{margin:10px;height:36px;border-radius:8px;background:#fff;border:1px solid #DDE1DC}
+.pv-space{background:radial-gradient(120px 80px at 70% 40%,rgba(140,123,255,.45),transparent 70%),radial-gradient(90px 70px at 20% 80%,rgba(111,231,242,.25),transparent 70%),radial-gradient(1px 1px at 20% 20%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 60% 15%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 85% 60%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 35% 55%,#fff 50%,transparent 51%),#05071A}
+.pv-space .h{padding:12px 10px;color:#fff;font-family:'Orbitron','Murecho',sans-serif;font-size:12px;letter-spacing:.1em;text-shadow:0 0 10px rgba(169,156,255,.8)}
+.pv-space .mn{position:absolute;right:-10px;top:-12px;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#fff,#C9CEDF 70%,#8E95AE);opacity:.75;box-shadow:0 0 20px rgba(255,255,255,.4)}
+.pv-space .c{margin:6px 10px;height:36px;border-radius:8px;background:rgba(8,10,34,.7);border:1px solid rgba(170,175,255,.3)}
+.pv-soon{display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--petal) 0 10px,transparent 10px 20px);color:var(--sub);font-size:11px;letter-spacing:.1em}
+.archbar{margin:0 0 18px;padding:14px;border:1px solid var(--gold-l);border-radius:14px;background:var(--white);font-size:13px;color:var(--sub);line-height:1.7}
+.archbar .btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.mig{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.mig h3{margin:0 0 4px;font-family:var(--serif);font-size:17px}
+.mig.done{opacity:.6}
+html[data-theme=space] .hcard,html[data-theme=space] .codebox,html[data-theme=space] .frcard,html[data-theme=space] .skin,html[data-theme=space] .archbar,html[data-theme=space] .mig{background:rgba(8,10,34,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme=space] .mstamp{border-color:var(--gold);box-shadow:0 0 14px rgba(111,231,242,.3)}
+html[data-theme=space] .mstamp strong{font-family:var(--orb);color:#fff;text-shadow:0 0 8px var(--gold)}
+html[data-theme=space] .codebox b{font-family:var(--orb);color:var(--gold);text-shadow:0 0 12px rgba(111,231,242,.5)}
+html[data-theme=space] .grp-h h2,html[data-theme=space] .hcard b,html[data-theme=space] .mig h3{font-family:var(--orb)}
+html[data-theme=space] .dashed{color:var(--gold);background:rgba(8,10,34,.45)}
+html[data-theme=space] .mav .av{border-color:#0B1026}
+html[data-theme=space] .welcome{position:relative;z-index:1}
+
+nav button{position:relative}.ndot{position:absolute;top:6px;left:calc(50% + 9px);width:7px;height:7px;border-radius:50%;background:#E8A35B}
+</style>
+<script>
+(function(){function f(){var r=document.documentElement,st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;var land=innerWidth>innerHeight,sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height);var gap=st?sh-innerHeight:0;r.classList.toggle('shim',gap>20);}f();addEventListener('resize',f);addEventListener('orientationchange',function(){setTimeout(f,300);});})();
+</script>
+</head>
+<body>
+<div id="splash" aria-hidden="true">
+  <svg viewBox="0 0 120 230" fill="none"><path d="M60 40V8" stroke="#CDBB91" stroke-width="2.4"/><circle cx="60" cy="7" r="6" stroke="#CDBB91" stroke-width="2.4"/><path d="M12 40h96v170l-48-40-48 40z" fill="#CDBB91"/><path d="M23 51h74v133l-37-31-37 31z" stroke="#3F5D63" stroke-width="2.4"/></svg>
+  <div class="sp-moon"></div>
+  <div class="t">旅のしおり</div>
+  <div class="r"></div>
+</div>
+<div id="app"></div>
+<script>
+/* 宇宙テーマ：銀河の背景をcanvasで描画 */
+(function(){
+var cv=null;
+function draw(){
+  if(document.documentElement.getAttribute('data-theme')!=='space'){if(cv)cv.style.display='none';return;}
+  if(!cv){cv=document.createElement('canvas');cv.id='sky';document.body.insertBefore(cv,document.body.firstChild);}
+  cv.style.display='block';
+  var dpr=Math.min(window.devicePixelRatio||1,2),w=innerWidth,h=Math.max(innerHeight,screen.height||0);
+  cv.width=w*dpr;cv.height=h*dpr;var c=cv.getContext('2d');c.scale(dpr,dpr);
+  var r=mulberry(7);
+  c.fillStyle='#05071A';c.fillRect(0,0,w,h);
+  // 銀河の帯（斜めに流れる星雲）
+  c.globalCompositeOperation='lighter';
+  var band=[[.15,.12,'120,90,255'],[.35,.3,'90,120,255'],[.55,.42,'200,110,255'],[.7,.55,'110,170,255'],[.5,.38,'255,140,190'],[.85,.7,'140,100,255'],[.25,.2,'255,170,140']];
+  band.forEach(function(b,i){
+    for(var k=0;k<13;k++){
+      var x=w*(b[0]+(r()-.5)*.35),y=h*(b[1]+(r()-.5)*.22),rad=(60+r()*140)*(w/400);
+      var g=c.createRadialGradient(x,y,0,x,y,rad);
+      g.addColorStop(0,'rgba('+b[2]+','+(.055+r()*.045)+')');g.addColorStop(1,'rgba('+b[2]+',0)');
+      c.fillStyle=g;c.beginPath();c.arc(x,y,rad,0,7);c.fill();
+    }
+  });
+  // 星雲の中の細かいガス
+  for(var i=0;i<1600;i++){
+    var t=r(),x=w*(.05+t*.9)+(r()-.5)*w*.3,y=h*(.05+t*.75)+(r()-.5)*h*.18,s=r()*1.2;
+    c.fillStyle='rgba(220,210,255,'+(r()*.18)+')';c.fillRect(x,y,s,s);
+  }
+  c.globalCompositeOperation='source-over';
+  // 星
+  for(i=0;i<420;i++){
+    var sx=r()*w,sy=r()*h,sz=r()<.92?r()*1.1+.3:r()*1.8+1;
+    c.fillStyle=['#ffffff','#dfe4ff','#cfe9ff','#ffe9f2'][i%4];c.globalAlpha=.4+r()*.6;
+    c.beginPath();c.arc(sx,sy,sz/2,0,7);c.fill();
+  }
+
+  // 星座（夏の大三角・カシオペヤ・北斗七星）
+  function cst(pts,lines,label,lx,ly){
+    c.strokeStyle='rgba(170,220,255,.32)';c.lineWidth=.8;c.setLineDash([3,3]);
+    lines.forEach(function(l){c.beginPath();c.moveTo(pts[l[0]][0]*w,pts[l[0]][1]*h);c.lineTo(pts[l[1]][0]*w,pts[l[1]][1]*h);c.stroke();});
+    c.setLineDash([]);
+    pts.forEach(function(p){var x=p[0]*w,y=p[1]*h,R=p[2]||2,g=c.createRadialGradient(x,y,0,x,y,R*5);
+      g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.3,'rgba(190,225,255,.5)');g.addColorStop(1,'rgba(190,225,255,0)');
+      c.fillStyle=g;c.beginPath();c.arc(x,y,R*5,0,7);c.fill();});
+    if(label){c.fillStyle='rgba(170,220,255,.38)';c.font='9px Orbitron, Murecho, sans-serif';c.fillText(label,lx*w,ly*h);}
+  }
+  cst([[.62,.30,2.6],[.86,.40,2.2],[.70,.58,2.4]],[[0,1],[1,2],[2,0]],'夏の大三角',.66,.47);
+  cst([[.08,.22,1.6],[.16,.27,1.8],[.22,.21,1.6],[.30,.26,1.8],[.37,.20,1.6]],[[0,1],[1,2],[2,3],[3,4]],'カシオペヤ',.12,.17);
+  cst([[.10,.74,1.6],[.18,.77,1.6],[.26,.76,1.6],[.33,.79,1.6],[.36,.86,1.6],[.46,.87,1.6],[.47,.80,1.6]],[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]],'北斗七星',.2,.71);
+  // 明るい星（光の筋つき）
+  c.globalAlpha=1;
+  for(i=0;i<6;i++){
+    var bx=r()*w,by=r()*h,L=6+r()*10,gg=c.createRadialGradient(bx,by,0,bx,by,L);
+    gg.addColorStop(0,'rgba(255,255,255,.95)');gg.addColorStop(.25,'rgba(200,190,255,.35)');gg.addColorStop(1,'rgba(200,190,255,0)');
+    c.fillStyle=gg;c.beginPath();c.arc(bx,by,L,0,7);c.fill();
+    c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=.6;c.beginPath();c.moveTo(bx-L*1.4,by);c.lineTo(bx+L*1.4,by);c.moveTo(bx,by-L*1.4);c.lineTo(bx,by+L*1.4);c.stroke();
+  }
+}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+window.drawSky=draw;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',draw);else draw();
+var tm;addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(draw,200);});
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<script>
+(function(){
+'use strict';
+var KEY='shiori_v1';
+var API='https://script.google.com/macros/s/AKfycbxqCkUR6TqhQHKnT3Agc37E0S3rv_X2As0m_pNV3hDuM66n_n-emUOUkNkJU3qFcap_/exec';
+var CATS=[
+  {id:'stay',label:'宿',icon:'bed'},
+  {id:'move',label:'交通',icon:'train'},
+  {id:'spot',label:'観光',icon:'flag'},
+  {id:'food',label:'食事',icon:'food'},
+  {id:'other',label:'その他',icon:'star'}
+];
+var TABS=[
+  {id:'schedule',label:'スケジュール',icon:'cal'},
+  {id:'info',label:'旅の情報',icon:'ticket'},
+  {id:'money',label:'費用',icon:'yen'},
+  {id:'prep',label:'準備',icon:'list'}
+];
+var P={
+  cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  ticket:'<path d="M4 6h16a1 1 0 0 1 1 1v3a2 2 0 0 0 0 4v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3a2 2 0 0 0 0-4V7a1 1 0 0 1 1-1z"/><path d="M15 7v10" stroke-dasharray="2 2.2"/>',
+  yen:'<path d="M7 4l5 7 5-7M12 11v9M8 13h8M8 16.5h8"/>',
+  list:'<path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.3 1.3L7.3 5M3.5 12l1.3 1.3 2.5-2.3M3.5 18l1.3 1.3 2.5-2.3"/>',
+  sliders:'<path d="M4 7h9M18 7h2M4 17h3M12 17h8"/><circle cx="15.5" cy="7" r="2.3"/><circle cx="9.5" cy="17" r="2.3"/>',
+  share:'<path d="M12 3v12M7.5 7.5L12 3l4.5 4.5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  train:'<rect x="6" y="3" width="12" height="13" rx="3"/><path d="M6 10h12M9.5 13.2h.01M14.5 13.2h.01M8.5 16l-2 4.5M15.5 16l2 4.5"/>',
+  food:'<path d="M5 3v5a2 2 0 0 0 4 0V3M7 10v11"/><path d="M17 21V3c-2 0-3.5 2.2-3.5 5.5S15 13 17 13"/>',
+  flag:'<path d="M5 21V4M5 4h11l-2.2 4L16 12H5"/>',
+  bed:'<path d="M3 19V6M3 15h18v4M21 15v-2.5a3 3 0 0 0-3-3h-7V15"/><circle cx="7" cy="12" r="2"/>',
+  star:'<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  phone:'<path d="M5 4h3.5l2 5-2.3 1.4a11 11 0 0 0 5.4 5.4L15 13.5l5 2V19a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  people:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.3A5 5 0 0 1 21 19.5"/>',
+  check:'<path d="M5.5 12.5l4 4L18.5 7.5"/>',
+  route:'<path d="M5 18l4-4M5 14v4h4"/><path d="M19 6l-4 4M19 10V6h-4"/><circle cx="12" cy="12" r="1.2"/>',
+  swap:'<path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  save:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
+  bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  book:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 4v6l2-1.5L13 10V4"/>',
+  back:'<path d="M15 5l-7 7 7 7"/>'
+};
+function ico(n,s){s=s||20;return '<svg class="i" width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(P[n]||'')+'</svg>';}
+
+/* ---------- state ---------- */
+var S=load(), tab='schedule', RO=false, roWho='', sharedChecks={}, prepOwn={items:false,todos:false}, prepView={}, asked={};
+var T=null, base=null, rev=0, queue=[], busy=false, pending=null, loadErr=false, onlineIds=[];
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.known)return o;}}catch(e){}return {api:'',known:[],last:null,me:{},tab:'schedule'};}
+function savePrefs(){try{S.tab=tab;localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function save(){savePrefs();if(!T)return;if(ARCH){toast('思い出は閲覧のみです');return;}var ops=diff(base,T);base=clone(T);if(ops.length){queue.push({t:T.id,ops:ops});flush();}}
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-3);}
+function cur(){return T;}
+function norm(t){
+  t.members=t.members||[];t.av=t.av||[];t.schedule=t.schedule||[];t.info=t.info||[];t.expenses=t.expenses||[];
+  t.expenses.forEach(function(e){if(e.owner===undefined){e.owner=t.members[0]?t.members[0].id:'_';}e.cat=e.cat||'other';e.for=e.for||[];});
+  t.prep=t.prep||{items:[],todos:[]};t.prep.items=t.prep.items||[];t.prep.todos=t.prep.todos||[];
+  t.prep.items.concat(t.prep.todos).forEach(function(x){x.checks=x.checks||{};x.owner=x.owner||'';});
+  return t;
+}
+function newTrip(title,start,end){
+  return norm({id:uid(),title:title,start:start,end:end,
+    prep:{items:['財布','スマホ・充電器','着替え','歯ブラシ','保険証'].map(function(x){return {id:uid(),text:x,owner:'',checks:{}};}),
+          todos:['宿の予約','交通の予約'].map(function(x){return {id:uid(),text:x,owner:'',a:'',checks:{}};})}});
+}
+
+/* ---------- utils ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function yen(n){return '¥'+Math.round(n||0).toLocaleString('ja-JP');}
+function pd(s){if(!s)return null;var a=s.split('-');if(a.length<3)return null;var d=new Date(+a[0],+a[1]-1,+a[2]);return isNaN(d)?null:d;}
+function key(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+var WD='日月火水木金土';
+function fday(d){return (d.getMonth()+1)+'/'+d.getDate()+'（'+WD[d.getDay()]+'）';}
+function days(t){
+  var s=pd(t.start),e=pd(t.end)||s,out=[];if(!s)return out;if(e<s)e=s;
+  for(var d=new Date(s);d<=e&&out.length<60;d.setDate(d.getDate()+1))out.push(new Date(d));
+  return out;
+}
+function today0(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());}
+function mapUrl(a){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a);}
+function safeUrl(u){u=String(u||'').trim();if(!u)return '';if(!/^https?:\/\//i.test(u))u='https://'+u;return u;}
+function host(u){try{return new URL(safeUrl(u)).hostname.replace(/^www\./,'');}catch(e){return 'リンク';}}
+function catOf(id){for(var i=0;i<CATS.length;i++)if(CATS[i].id===id)return CATS[i];return CATS[4];}
+function driveId(u){u=String(u||'');var m=u.match(/\/d\/([\w-]{20,})/)||u.match(/[?&]id=([\w-]{20,})/);return m?m[1]:'';}
+function imgSrc(u){var id=driveId(u);if(id)return 'https://drive.google.com/thumbnail?id='+id+'&sz=w1600';return /^https:\/\/.+\.(jpe?g|png|webp|gif)(\?.*)?$/i.test(u)?u:'';}
+function openLb(u){
+  var src=imgSrc(u),bg=document.createElement('div');bg.className='lb';
+  bg.innerHTML=(src?'<img alt="" src="'+esc(src)+'">':'<div class="lb-msg">この画像はアプリ内で表示できません</div>')+
+    '<div class="lb-row"><a href="'+esc(safeUrl(u))+'" target="_blank" rel="noopener">ドライブで開く</a><button type="button">閉じる</button></div>';
+  var im=bg.querySelector('img');if(im)im.onerror=function(){im.outerHTML='<div class="lb-msg">表示できませんでした。<br>ドライブの共有設定が「リンクを知っている全員」になっているか確認してください</div>';};
+  bg.querySelector('button').onclick=function(){bg.remove();};
+  bg.onclick=function(e){if(e.target===bg)bg.remove();};
+  document.body.appendChild(bg);
+}
+function payerLabel(t,x){if(t.members.length<2)return '';return (!x.payer||x.payer==='split')?'割り勘':memName(t,x.payer);}
+function settle(t){
+  var net={};t.members.forEach(function(m){net[m.id]=0;});
+  t.expenses.forEach(function(e){
+    if(!e.tk)return;var fr=(e.for||[]).filter(function(id){return id!==e.owner&&net[id]!==undefined;});
+    if(!fr.length||net[e.owner]===undefined)return;
+    var amt=e.tAmount||e.amount||0,each=Math.floor(amt/fr.length),rest=amt-each*fr.length;
+    net[e.owner]+=amt;fr.forEach(function(id,i){net[id]-=each+(i<rest?1:0);});
+  });
+  var pos=[],neg=[];Object.keys(net).forEach(function(id){if(net[id]>0)pos.push({id:id,v:net[id]});else if(net[id]<0)neg.push({id:id,v:-net[id]});});
+  pos.sort(function(a,b){return b.v-a.v;});neg.sort(function(a,b){return b.v-a.v;});
+  var pays=[],i=0,j=0;
+  while(i<neg.length&&j<pos.length){var m=Math.min(neg[i].v,pos[j].v);pays.push({from:neg[i].id,to:pos[j].id,v:m});neg[i].v-=m;pos[j].v-=m;if(!neg[i].v)i++;if(!pos[j].v)j++;}
+  return {net:net,pays:pays};
+}
+function infoById(t,id){for(var i=0;i<t.info.length;i++)if(t.info[i].id===id)return t.info[i];return null;}
+function memName(t,id){for(var i=0;i<t.members.length;i++)if(t.members[i].id===id)return t.members[i].name;return '';}
+function num(v){var n=parseInt(String(v).replace(/[^\d]/g,''),10);return isNaN(n)?0:n;}
+var tt;function toast(m){var el=document.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el);}el.textContent=m;el.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('on');},1800);}
+
+/* ---------- render ---------- */
+var app=document.getElementById('app');
+function render(){
+  if(!S.key){renderSignup();return;}
+  if(VIEW!=='trip'){renderHome();return;}
+  var t=cur();
+  if(!t){renderLoading();return;}
+  norm(t);
+  app.innerHTML=header(t)+'<main id="main">'+archBar()+body(t)+'</main>'+
+    (tab!=='prep'&&!ARCH?'<button class="fab" id="fab" aria-label="追加">'+ico('plus',26)+'</button>':'')+nav();
+  bind(t);bindArch(t);setSync(syncSt);
+  var bb=document.getElementById('bBack');if(bb)bb.onclick=function(){flush();goHome();};
+  if(!ARCH&&!myMid(t)&&t.members.some(function(m){return !m.uid;})&&!asked[t.id]&&!document.querySelector('.sheet-bg')){asked[t.id]=1;claimSheet(t);}
+}
+function header(t){
+  var ds=days(t),range='';
+  if(ds.length){range=fday(ds[0])+(ds.length>1?' 〜 '+fday(ds[ds.length-1])+'　'+(ds.length-1)+'泊'+ds.length+'日':'　日帰り');}
+  var st='',td=today0();
+  if(ds.length){
+    var s=ds[0],e=ds[ds.length-1],diff=Math.round((s-td)/864e5);
+    if(diff>0)st='<div class="stamp"><small>出発まで</small><b>'+diff+'</b><small>日</small></div>';
+    else if(td<=e)st='<div class="stamp"><small>旅行中</small><b>'+(Math.round((td-s)/864e5)+1)+'</b><small>日目</small></div>';
+    else st='<div class="stamp word"><b>おかえり</b></div>';
+  }
+  return '<header class="ticket"><div class="hrow"><span class="lft"><button class="hbtn back" id="bBack" aria-label="ホームへ">'+ico('back',22)+'</button><span class="brand">旅のしおり</span></span><div class="hbtns">'+(meOf(t)?'<span class="who">'+avatar(t,meOf(t),20)+esc(memName(t,meOf(t)))+'</span>':'')+
+    (ARCH?'':'<button class="hbtn" id="bSet" aria-label="設定">'+ico('sliders',22)+'</button>')+
+    '</div></div><div class="hmain"><div><h1>'+esc(t.title)+'</h1><div class="dates">'+range+'</div><div class="online" id="online">'+onlineHtml()+'</div></div>'+st+'</div></header>';
+}
+function nav(){
+  return '<nav><div class="in">'+TABS.map(function(x){return '<button data-tab="'+x.id+'" class="'+(tab===x.id?'on':'')+'">'+ico(x.icon,22)+x.label+'</button>';}).join('')+'</div></nav>';
+}
+function body(t){
+  if(tab==='info')return vInfo(t);
+  if(tab==='money')return vMoney(t);
+  if(tab==='prep')return vPrep(t);
+  return vSchedule(t);
+}
+
+/* schedule */
+function toMin(h){var a=(h||'0:0').split(':');return (+a[0])*60+(+a[1]);}
+function todayPanel(t){
+  var ds=days(t),td=key(today0()),idx=-1;
+  ds.forEach(function(d,i){if(key(d)===td)idx=i;});
+  if(idx<0)return '';
+  var n=new Date(),hm=('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
+  var items=t.schedule.filter(function(x){return x.day===td&&x.time;}).sort(function(a,b){return a.time.localeCompare(b.time);});
+  var next=null,now=null;items.forEach(function(x){if(x.time>hm){if(!next)next=x;}else now=x;});
+  var h='<div class="today"><div class="today-h">本日　Day '+(idx+1)+'</div>';
+  if(next){
+    var df=toMin(next.time)-toMin(hm),left=df>=60?Math.floor(df/60)+'時間'+(df%60?(df%60)+'分':''):df+'分';
+    var inf=next.infoId?infoById(t,next.infoId):null,addr=next.address||(inf&&inf.address)||'';
+    h+='<div class="today-l">次の予定まで</div><div class="today-c">あと<b>'+left+'</b></div><div class="today-n"><span>'+esc(next.time)+'</span>'+esc(next.title)+'</div>'+
+      (addr?'<div class="links"><a class="chip" href="'+esc('https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(addr))+'" target="_blank" rel="noopener">'+ico('route',14)+'<span>ここから経路</span></a><a class="chip" href="'+esc(mapUrl(addr))+'" target="_blank" rel="noopener">'+ico('pin',14)+'<span>'+esc(addr)+'</span></a></div>':'');
+  }else{
+    var tm=ds[idx+1]?key(ds[idx+1]):'',first=t.schedule.filter(function(x){return x.day===tm&&x.time;}).sort(function(a,b){return a.time.localeCompare(b.time);})[0];
+    h+='<div class="today-n" style="margin-top:10px">今日の予定はすべて終わりました</div>'+(first?'<div class="today-l">明日は '+esc(first.time)+' から「'+esc(first.title)+'」</div>':'');
+  }
+  if(now)h+='<div class="today-p">いまは「'+esc(now.title)+'」の時間です</div>';
+  return h+'</div>';
+}
+function vSchedule(t){
+  var ds=days(t),keys={},html='',td=key(today0()),n=new Date(),hm=('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
+  ds.forEach(function(d){keys[key(d)]=1;});
+  ds.forEach(function(d,i){
+    var k=key(d),items=t.schedule.filter(function(x){return x.day===k;}).sort(function(a,b){return (a.time||'').localeCompare(b.time||'');});
+    var nowId=null;
+    if(k===td){items.forEach(function(x){if(x.time&&x.time<=hm)nowId=x.id;});}
+    html+='<div class="day"><div class="dayhead"><span class="dnum">Day '+(i+1)+'</span><span class="ddate">'+fday(d)+'</span></div><div class="tl">'+
+      items.map(function(x){return evHtml(t,x,x.id===nowId);}).join('')+'</div>'+
+      (RO?'':'<button class="addrow" data-addday="'+k+'">'+ico('plus',16)+'予定を追加</button>')+'</div>';
+  });
+  var orphan=t.schedule.filter(function(x){return !keys[x.day];});
+  if(orphan.length){
+    html+='<div class="day"><div class="dayhead"><span class="dnum">期間外</span><span class="ddate">日付を直してください</span></div><div class="tl">'+orphan.map(function(x){return evHtml(t,x,false);}).join('')+'</div></div>';
+  }
+  if(!ds.length)html='<div class="empty">'+ico('cal',40)+'右上の設定から旅の日程を入れてください</div>';
+  return todayPanel(t)+html;
+}
+function evHtml(t,x,now){
+  var inf=x.infoId?infoById(t,x.infoId):null;
+  var addr=x.address||(inf&&inf.address)||'',url=x.url||(inf&&inf.url)||'';
+  var links='';
+  if(inf)links+='<button type="button" class="chip" data-noopen data-goinfo="'+inf.id+'">'+ico(catOf(inf.cat).icon,14)+'<span>'+esc(inf.name)+'</span></button>';
+  if(addr)links+='<a class="chip" href="'+esc(mapUrl(addr))+'" target="_blank" rel="noopener">'+ico('pin',14)+'<span>'+esc(addr)+'</span></a>';
+  if(url)links+='<a class="chip" href="'+esc(safeUrl(url))+'" target="_blank" rel="noopener">'+ico('link',14)+'<span>'+esc(host(url))+'</span></a>';
+  return '<div class="ev'+(now?' now':'')+'"><div class="evtime">'+esc(x.time||'')+(x.end?'<small>〜'+esc(x.end)+'</small>':'')+'</div>'+
+    '<div class="evdot">'+ico(catOf(x.type).icon,16)+'</div>'+
+    '<div class="evbody" '+(RO?'':'data-ev="'+x.id+'" role="button" tabindex="0"')+'>'+(now?'<span class="nowtag">いまここ</span>':'')+
+    '<div class="evtitle">'+esc(x.title)+'</div>'+(x.memo?'<div class="evmemo">'+esc(x.memo)+'</div>':'')+
+    (links?'<div class="links">'+links+'</div>':'')+'</div></div>';
+}
+
+/* info */
+function vInfo(t){
+  if(!t.info.length)return '<div class="empty">'+ico('ticket',40)+'宿・交通・行きたい場所を登録しておくと、<br>スケジュールから呼び出せます</div>';
+  return CATS.map(function(c){
+    var list=t.info.filter(function(x){return (x.cat||'other')===c.id;});
+    if(!list.length)return '';
+    return '<div class="sec"><div class="cat-h">'+ico(c.icon,20)+'<h3>'+c.label+'</h3><span class="cnt">'+list.length+'件</span></div>'+
+      list.map(function(x){
+        var r='';
+        if(x.access)r+='<div class="card-row">'+ico('route',15)+'<span>'+esc(x.access)+'</span></div>';
+        var links='';
+        if(x.address)links+='<a class="chip" href="'+esc(mapUrl(x.address))+'" target="_blank" rel="noopener">'+ico('pin',14)+'<span>'+esc(x.address)+'</span></a>';
+        if(x.tel)links+='<a class="chip" href="tel:'+esc(x.tel.replace(/[^\d+]/g,''))+'">'+ico('phone',14)+'<span>'+esc(x.tel)+'</span></a>';
+        if(x.url)links+='<a class="chip" href="'+esc(safeUrl(x.url))+'" target="_blank" rel="noopener">'+ico('link',14)+'<span>'+esc(host(x.url))+'</span></a>';
+        var pl=x.cost?payerLabel(t,x):'',im=(x.imgs||[]).filter(Boolean);
+        return '<div class="card" data-iid="'+x.id+'" '+(RO?'':'data-info="'+x.id+'" role="button" tabindex="0"')+'><div class="card-top"><span class="card-name">'+esc(x.name)+'</span>'+
+          (x.cost?'<span class="card-cost">'+yen(x.cost)+(pl?'<span class="payer">'+esc(pl)+'</span>':'')+'</span>':'')+'</div>'+r+
+          (x.memo?'<div class="card-row" style="white-space:pre-wrap">'+esc(x.memo)+'</div>':'')+
+          (links?'<div class="links">'+links+'</div>':'')+
+          (im.length?'<div class="thumbs">'+im.map(function(u,k){var sr=imgSrc(u);return '<button type="button" data-noopen data-img="'+x.id+':'+k+'">'+(sr?'<img loading="lazy" alt="" src="'+esc(sr)+'" onerror="this.outerHTML=\'表示できません\'">':'画像を開く')+'</button>';}).join('')+'</div>':'')+'</div>';
+      }).join('')+'</div>';
+  }).join('');
+}
+
+/* money */
+function dayLabel(t,k){var ds=days(t);for(var i=0;i<ds.length;i++)if(key(ds[i])===k)return 'Day '+(i+1)+' '+fday(ds[i]);return '';}
+function forNames(t,e){return (e.for||[]).map(function(id){return memName(t,id);}).filter(Boolean).join('・');}
+function vMoney(t){
+  var plan=0,byCat={};
+  t.info.forEach(function(x){if(x.cost){plan+=x.cost;byCat[x.cat||'other']=(byCat[x.cat||'other']||0)+x.cost;}});
+  function barsOf(m,tot){return CATS.filter(function(c){return m[c.id];}).map(function(c){
+    return '<div class="bar"><span>'+c.label+'</span><div class="bar-t"><i style="width:'+Math.max(4,m[c.id]/tot*100)+'%"></i></div><b>'+yen(m[c.id])+'</b></div>';}).join('');}
+  var b1=barsOf(byCat,plan),bud='';
+  if(t.members.length>=2&&plan){var pp={};t.members.forEach(function(m){pp[m.id]=0;});
+    t.info.forEach(function(x){if(!x.cost)return;if(x.payer&&x.payer!=='split'&&pp[x.payer]!==undefined)pp[x.payer]+=x.cost;else t.members.forEach(function(m){pp[m.id]+=x.cost/t.members.length;});});
+    bud='<div style="margin-top:12px">'+t.members.map(function(m){return '<div class="net"><span>'+avatar(t,m.id,20)+esc(m.name)+'</span><b><small>予算</small>'+yen(Math.round(pp[m.id]))+'</b></div>';}).join('')+'</div>';}
+  var h='<div class="sec"><div class="sec-h"><h2>予定費用</h2><span class="meta">旅の情報から自動集計</span></div><div class="panel"><div class="cap">合計</div><div class="big">'+yen(plan)+'</div>'+bud+
+    (b1?'<div class="bars">'+b1+'</div>':'<div class="hint" style="margin-top:6px">旅の情報に金額を入れるとここに集まります</div>')+'</div></div>';
+  var w=whoOf(t),me=meOf(t);
+  if(t.members.length)h+='<div class="sec" style="margin-bottom:18px"><div class="hint" style="margin:0 4px 8px">誰の家計簿を見る？</div><div class="tchips">'+
+    t.members.map(function(m){return '<button data-who="'+m.id+'" class="mw'+(m.id===w?' on':'')+'">'+avatar(t,m.id,20)+esc(m.name)+(m.id===me?'（自分）':'')+'</button>';}).join('')+'</div></div>';
+  var mine=t.expenses.filter(function(e){return w==='_'||e.owner===w;}).slice().sort(function(a,b){return (a.day||'').localeCompare(b.day||'');});
+  var tot=0,mc={};mine.forEach(function(e){tot+=e.amount||0;mc[e.cat||'other']=(mc[e.cat||'other']||0)+(e.amount||0);});
+  var b2=barsOf(mc,tot);
+  h+='<div class="sec"><div class="sec-h"><h2>使ったお金</h2><span class="meta">'+(w==='_'?'':esc(memName(t,w))+'・')+mine.length+'件</span></div><div class="panel"><div class="cap">合計</div><div class="big">'+yen(tot)+'</div>'+
+    (b2?'<div class="bars">'+b2+'</div>':'')+
+    (mine.length?'<div style="margin-top:10px">'+mine.map(function(e){
+      var sub=[dayLabel(t,e.day)];if(e.tk&&forNames(t,e))sub.push(esc(forNames(t,e))+'の分も立替');
+      return '<button class="row" '+(RO?'disabled':'data-exp="'+e.id+'"')+'><span style="display:flex;gap:10px;align-items:center"><span style="color:var(--pink)">'+ico(catOf(e.cat).icon,20)+'</span><span><span class="t">'+esc(e.title||catOf(e.cat).label)+'</span>'+
+        (sub.join('')?'<br><span class="s">'+sub.filter(Boolean).join('　')+'</span>':'')+'</span></span><span class="a">'+yen(e.amount)+'</span></button>';
+    }).join('')+'</div>':'<div class="hint" style="margin-top:6px">'+(RO?'まだ記録はありません':'右下の＋から、使ったお金を記録できます')+'</div>')+'</div></div>';
+  if(t.members.length>=2){
+    var st=settle(t),any=st.pays.length;
+    h+='<div class="sec"><div class="sec-h"><h2>精算</h2><span class="meta">立替の差し引き</span></div><div class="sub-panel">'+
+      t.members.map(function(m){var n=st.net[m.id]||0;return '<div class="net"><span>'+avatar(t,m.id,20)+esc(m.name)+'</span><b class="'+(n>0?'plus':'')+'"><small>'+(n>0?'受け取る':n<0?'支払う':'')+'</small>'+(n>0?'+':n<0?'−':'')+yen(Math.abs(n))+'</b></div>';}).join('')+
+      (any?'<div class="pays">'+st.pays.map(function(p){return '<div class="p"><span>'+esc(memName(t,p.from))+'</span><i></i><span>'+esc(memName(t,p.to))+'</span><b>'+yen(p.v)+'</b></div>';}).join('')+'</div>':'<div class="hint" style="padding:10px 0 2px">精算はありません</div>')+
+      '</div></div>';
+  }
+  return h;
+}
+
+/* prep */
+function whoOf(t){
+  if(!t.members.length)return '_';
+  var w=prepView[t.id]||meOf(t);
+  if(!w||!memName(t,w))w=t.members[0].id;return w;
+}
+function meOf(t){var m=RO?roWho:((S.me||{})[t.id]);return memName(t,m)?m:'';}
+function setMe(t,id){
+  S.me=S.me||{};S.me[t.id]=id;save();
+  prepView[t.id]='';
+}
+function isDone(x,w){return RO?!!sharedChecks[w+':'+x.id]:!!(x.checks&&x.checks[w]);}
+function vPrep(t){
+  var w=whoOf(t),me=meOf(t);
+  // 持ち物（人ごと）
+  var list=t.prep.items.filter(function(x){return w==='_'||!x.owner||x.owner===w;});
+  var dn=list.filter(function(x){return isDone(x,w);}).length,pct=list.length?dn/list.length*100:0;
+  var h='<div class="sec"><div class="sec-h"><h2>持ち物</h2><span class="meta">'+dn+' / '+list.length+'</span></div><div class="prog"><i style="width:'+pct+'%"></i></div>';
+  if(t.members.length)h+='<div class="tchips" style="margin:0 0 14px">'+t.members.map(function(m){return '<button data-who="'+m.id+'" class="mw'+(m.id===w?' on':'')+'">'+avatar(t,m.id,20)+esc(m.name)+(m.id===me?'（自分）':'')+'</button>';}).join('')+'</div>';
+  h+=list.map(function(x){var d=isDone(x,w);return '<div class="chk'+(d?' done':'')+'"><button class="box" data-chk="items:'+x.id+'" aria-label="'+esc(x.text)+'" aria-pressed="'+d+'">'+(d?ico('check',16):'')+'</button><button class="txt" data-chk="items:'+x.id+'">'+esc(x.text)+'</button>'+
+    '<button class="del" data-delprep="items:'+x.id+'" aria-label="削除">'+ico('x',16)+'</button></div>';}).join('')+
+    '<div class="addline"><input data-prepin="items" placeholder="'+(w!=='_'?esc(memName(t,w))+'の持ち物を追加':'持ち物を追加')+'"><button class="btn sm" data-prepadd="items">追加</button></div></div>';
+  // やること（全員共通・担当者つき）
+  var td=t.prep.todos,tdn=td.filter(function(x){return x.checks&&x.checks.all;}).length,tp=td.length?tdn/td.length*100:0;
+  h+='<div class="sec"><div class="sec-h"><h2>やること</h2><span class="meta">'+tdn+' / '+td.length+'</span></div><div class="prog"><i style="width:'+tp+'%"></i></div>'+
+    td.map(function(x){var d=!!(x.checks&&x.checks.all),an=memName(t,x.a);return '<div class="chk'+(d?' done':'')+'"><button class="box" data-chk="todos:'+x.id+'" aria-label="'+esc(x.text)+'" aria-pressed="'+d+'">'+(d?ico('check',16):'')+'</button><button class="txt" data-chk="todos:'+x.id+'">'+esc(x.text)+'</button>'+
+      (t.members.length?'<button class="asg'+(an?'':' none')+'" data-asg="'+x.id+'">'+(an?avatar(t,x.a,16)+esc(an):'担当未定')+'</button>':'')+
+      '<button class="del" data-delprep="todos:'+x.id+'" aria-label="削除">'+ico('x',16)+'</button></div>';}).join('')+
+    '<div class="addline"><input data-prepin="todos" placeholder="予約などのやることを追加"><button class="btn sm" data-prepadd="todos">追加</button></div></div>';
+  return h;
+}
+
+/* ---------- binding ---------- */
+function qa(s){return Array.prototype.slice.call(app.querySelectorAll(s));}
+function bind(t){
+  qa('[data-tab]').forEach(function(b){b.onclick=function(){tab=b.dataset.tab;save();render();app.scrollTop=0;};});
+  var f=document.getElementById('fab');
+  if(f)f.onclick=function(){if(tab==='schedule')evSheet(t,null,days(t).length?key(days(t)[0]):'');else if(tab==='info')infoSheet(t,null);else if(tab==='money')expSheet(t,null);};
+  var bs=document.getElementById('bShare');if(bs)bs.onclick=function(){shareTrip(t);};
+  var bt=document.getElementById('bSet');if(bt)bt.onclick=function(){setSheet(t);};
+  qa('[data-addday]').forEach(function(b){b.onclick=function(){evSheet(t,null,b.dataset.addday);};});
+  qa('[data-ev]').forEach(function(b){tapOpen(b,function(){evSheet(t,find(t.schedule,b.dataset.ev));});});
+  qa('[data-info]').forEach(function(b){tapOpen(b,function(){infoSheet(t,find(t.info,b.dataset.info));});});
+  qa('[data-img]').forEach(function(b){b.onclick=function(e){e.stopPropagation();var p=b.dataset.img.split(':'),x=find(t.info,p[0]);if(x&&x.imgs)openLb(x.imgs[+p[1]]);};});
+  qa('[data-goinfo]').forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.dataset.goinfo;tab='info';save();render();
+    var c=app.querySelector('[data-iid="'+id+'"]');if(c){c.scrollIntoView({block:'center'});c.classList.add('flash');}};});
+  qa('[data-exp]').forEach(function(b){b.onclick=function(){expSheet(t,find(t.expenses,b.dataset.exp));};});
+  qa('[data-chk]').forEach(function(b){b.onclick=function(){
+    var p=b.dataset.chk.split(':'),x=find(t.prep[p[0]],p[1]);if(!x)return;
+    var w=p[0]==='todos'?'all':whoOf(t);
+    if(RO){var k=w+':'+x.id;sharedChecks[k]=!sharedChecks[k];try{localStorage.setItem('shiori_chk_'+t.id,JSON.stringify(sharedChecks));}catch(e){}}
+    else{x.checks=x.checks||{};x.checks[w]=!x.checks[w];save();}
+    render();
+  };});
+  qa('[data-delprep]').forEach(function(b){b.onclick=function(){var p=b.dataset.delprep.split(':');t.prep[p[0]]=t.prep[p[0]].filter(function(x){return x.id!==p[1];});save();render();};});
+  qa('[data-prepadd]').forEach(function(b){
+    var g=b.dataset.prepadd,inp=app.querySelector('[data-prepin="'+g+'"]');
+    function add(){var v=inp.value.trim();if(!v)return;var w=whoOf(t);t.prep[g].push(g==='items'?{id:uid(),text:v,owner:w!=='_'?w:'',checks:{}}:{id:uid(),text:v,owner:'',a:'',checks:{}});save();render();var n=app.querySelector('[data-prepin="'+g+'"]');if(n)n.focus();}
+    b.onclick=add;inp.onkeydown=function(e){if(e.key==='Enter'&&!e.isComposing){e.preventDefault();add();}};
+  });
+  qa('[data-who]').forEach(function(b){b.onclick=function(){
+    prepView[t.id]=b.dataset.who;render();
+  };});
+  qa('[data-asg]').forEach(function(b){b.onclick=function(){
+    var x=find(t.prep.todos,b.dataset.asg);if(!x)return;
+    openSheet('担当を決める','<p class="hint" style="margin:0 0 12px">「'+esc(x.text)+'」の担当</p><div class="tchips"><button data-a="" class="'+(!x.a?'on':'')+'">未定</button>'+
+      t.members.map(function(m){return '<button data-a="'+m.id+'" class="'+(x.a===m.id?'on':'')+'">'+esc(m.name)+'</button>';}).join('')+'</div>',function(el){
+      el.querySelectorAll('[data-a]').forEach(function(c){c.onclick=function(){x.a=c.dataset.a;save();closeSheet();render();};});
+    });
+  };});
+    var bw=document.getElementById('bWho');if(bw)bw.onclick=function(){whoSheet(t);};
+}
+function delMember(t,id){
+  var used=t.expenses.some(function(e){return e.owner===id||(e.for||[]).indexOf(id)>=0;});
+  var own=t.prep.items.concat(t.prep.todos).some(function(x){return x.owner===id;});
+  if((used||own)&&!confirm(memName(t,id)+'の支払い記録や個人の準備リストが含まれています。削除しますか？'))return false;
+  t.prep.items=t.prep.items.filter(function(x){return x.owner!==id;});t.prep.todos=t.prep.todos.filter(function(x){return x.owner!==id;});
+  t.members=t.members.filter(function(m){return m.id!==id;});t.av=t.av.filter(function(a){return a.id!==id;});t.prep.todos.forEach(function(x){if(x.a===id)x.a='';});
+  t.expenses=t.expenses.filter(function(e){return e.owner!==id;});t.expenses.forEach(function(e){e.for=(e.for||[]).filter(function(x){return x!==id;});if(!e.for.length)e.tk=false;});
+  if(S.me&&S.me[t.id]===id)delete S.me[t.id];
+  save();return true;
+}
+function tapOpen(el,fn){el.addEventListener('click',function(e){if(e.target.closest('a,[data-noopen]'))return;fn();});el.addEventListener('keydown',function(e){if(e.key==='Enter')fn();});}
+function find(arr,id){for(var i=0;i<arr.length;i++)if(arr[i].id===id)return arr[i];return null;}
+
+/* ---------- sheets ---------- */
+function openSheet(title,html,mount){
+  closeSheet();
+  var bg=document.createElement('div');bg.className='sheet-bg';
+  bg.innerHTML='<div class="sheet" role="dialog" aria-label="'+esc(title)+'"><div class="grab"></div><div class="sheet-h"><h2>'+esc(title)+'</h2><button class="ib" data-close aria-label="閉じる">'+ico('x',20)+'</button></div><div class="sheet-b">'+html+'</div></div>';
+  document.body.appendChild(bg);
+  requestAnimationFrame(function(){bg.classList.add('on');});
+  bg.addEventListener('click',function(e){if(e.target===bg||e.target.closest('[data-close]'))closeSheet();});
+  if(mount)mount(bg.querySelector('.sheet-b'));
+}
+function closeSheet(){var b=document.querySelector('.sheet-bg');if(b)b.remove();if(pending)setTimeout(function(){if(pending&&canApply())applyResp(pending);},0);}
+function fld(label,inner){return '<label class="f"><span>'+label+'</span>'+inner+'</label>';}
+function v(el,s){return el.querySelector(s).value.trim();}
+
+function evSheet(t,x,dayKey){
+  var isNew=!x;x=x||{type:'spot',day:dayKey};
+  var ds=days(t),opts=ds.map(function(d,i){var k=key(d);return '<option value="'+k+'"'+(k===x.day?' selected':'')+'>Day '+(i+1)+'　'+fday(d)+'</option>';}).join('');
+  if(x.day&&!ds.some(function(d){return key(d)===x.day;}))opts+='<option value="'+esc(x.day)+'" selected>期間外（'+esc(x.day)+'）</option>';
+  var infOpts='<option value="">紐付けない</option>'+CATS.map(function(c){
+    var l=t.info.filter(function(i){return (i.cat||'other')===c.id;});
+    return l.length?'<optgroup label="'+c.label+'">'+l.map(function(i){return '<option value="'+i.id+'"'+(i.id===x.infoId?' selected':'')+'>'+esc(i.name)+'</option>';}).join('')+'</optgroup>':'';
+  }).join('');
+  var html=fld('予定名','<input id="fT" value="'+esc(x.title||'')+'" placeholder="例：清水寺を散策">')+
+    '<div class="two">'+fld('開始','<input id="fTime" type="time" value="'+esc(x.time||'')+'">')+fld('終了（任意）','<input id="fEnd" type="time" value="'+esc(x.end||'')+'">')+'</div>'+
+    fld('日にち','<select id="fDay">'+opts+'</select>')+
+    '<label class="f"><span>種類</span><div class="seg" id="fType">'+CATS.map(function(c){return '<button type="button" data-v="'+c.id+'" class="'+(x.type===c.id?'on':'')+'">'+ico(c.icon,18)+c.label+'</button>';}).join('')+'</div></label>'+
+    (t.info.length?fld('旅の情報と紐付け','<select id="fInfo">'+infOpts+'</select>'):'')+
+    fld('住所','<input id="fAddr" value="'+esc(x.address||'')+'" placeholder="紐付けた情報に住所があれば空欄でOK">')+
+    fld('URL','<input id="fUrl" type="url" inputmode="url" value="'+esc(x.url||'')+'" placeholder="https://">')+
+    fld('メモ','<textarea id="fMemo">'+esc(x.memo||'')+'</textarea>')+
+    '<button class="btn" id="fSave">'+(isNew?'追加する':'保存する')+'</button>'+(isNew?'':'<button class="btn danger" id="fDel">'+ico('trash',18)+'この予定を削除</button>');
+  openSheet(isNew?'予定を追加':'予定を編集',html,function(el){
+    var type=x.type;
+    el.querySelectorAll('#fType button').forEach(function(b){b.onclick=function(){type=b.dataset.v;el.querySelectorAll('#fType button').forEach(function(o){o.classList.toggle('on',o===b);});};});
+    el.querySelector('#fSave').onclick=function(){
+      var title=v(el,'#fT');if(!title){toast('予定名を入れてください');return;}
+      var o={title:title,time:v(el,'#fTime'),end:v(el,'#fEnd'),day:el.querySelector('#fDay').value,type:type,
+        infoId:el.querySelector('#fInfo')?el.querySelector('#fInfo').value:'',address:v(el,'#fAddr'),url:v(el,'#fUrl'),memo:v(el,'#fMemo')};
+      if(isNew){o.id=uid();t.schedule.push(o);}else Object.assign(x,o);
+      save();closeSheet();render();toast(isNew?'追加しました':'保存しました');
+    };
+    var d=el.querySelector('#fDel');if(d)d.onclick=function(){if(!confirm('この予定を削除しますか？'))return;t.schedule=t.schedule.filter(function(i){return i.id!==x.id;});save();closeSheet();render();toast('削除しました');};
+  });
+}
+
+function infoSheet(t,x){
+  var isNew=!x;x=x||{cat:'stay'};
+  var html='<label class="f"><span>種類</span><div class="seg" id="fCat">'+CATS.map(function(c){return '<button type="button" data-v="'+c.id+'" class="'+(x.cat===c.id?'on':'')+'">'+ico(c.icon,18)+c.label+'</button>';}).join('')+'</div></label>'+
+    fld('名前','<input id="fN" value="'+esc(x.name||'')+'" placeholder="例：〇〇旅館">')+
+    fld('費用（予定）','<input id="fCost" inputmode="numeric" value="'+(x.cost||'')+'" placeholder="例：32000">')+
+    (t.members.length>=2?'<label class="f"><span>誰が払う？</span><div class="tchips" id="fPayer"><button type="button" data-v="split" class="'+(!x.payer||x.payer==='split'?'on':'')+'">割り勘</button>'+t.members.map(function(m){return '<button type="button" data-v="'+m.id+'" class="'+(x.payer===m.id?'on':'')+'">'+esc(m.name)+'</button>';}).join('')+'</div></label>':'')+
+    fld('アクセス','<input id="fAcc" value="'+esc(x.access||'')+'" placeholder="例：京都駅から市バス206系統で15分">')+
+    fld('住所','<input id="fAddr" value="'+esc(x.address||'')+'">')+
+    fld('電話番号','<input id="fTel" type="tel" value="'+esc(x.tel||'')+'">')+
+    fld('URL','<input id="fUrl" type="url" inputmode="url" value="'+esc(x.url||'')+'" placeholder="予約ページなど">')+
+    fld('メモ','<textarea id="fMemo" placeholder="予約番号、チェックイン時間など">'+esc(x.memo||'')+'</textarea>')+
+    '<label class="f"><span>画像（Googleドライブの共有URL・最大3枚）</span>'+[0,1,2].map(function(k){return '<input class="fImg" type="url" inputmode="url" style="margin-bottom:6px" value="'+esc((x.imgs||[])[k]||'')+'" placeholder="画像'+(k+1)+'のURL">';}).join('')+'</label>'+
+    '<div class="note">ドライブの共有設定を「リンクを知っている全員」にしてからURLをコピーしてください</div>'+
+    '<button class="btn" id="fSave">'+(isNew?'追加する':'保存する')+'</button>'+(isNew?'':'<button class="btn danger" id="fDel">'+ico('trash',18)+'この情報を削除</button>');
+  openSheet(isNew?'旅の情報を追加':'旅の情報を編集',html,function(el){
+    var cat=x.cat,payer=x.payer||'split';
+    el.querySelectorAll('#fPayer button').forEach(function(b){b.onclick=function(){payer=b.dataset.v;el.querySelectorAll('#fPayer button').forEach(function(o){o.classList.toggle('on',o===b);});};});
+    el.querySelectorAll('#fCat button').forEach(function(b){b.onclick=function(){cat=b.dataset.v;el.querySelectorAll('#fCat button').forEach(function(o){o.classList.toggle('on',o===b);});};});
+    el.querySelector('#fSave').onclick=function(){
+      var name=v(el,'#fN');if(!name){toast('名前を入れてください');return;}
+      var o={cat:cat,name:name,cost:num(v(el,'#fCost')),access:v(el,'#fAcc'),address:v(el,'#fAddr'),tel:v(el,'#fTel'),url:v(el,'#fUrl'),memo:v(el,'#fMemo'),payer:payer,imgs:Array.prototype.map.call(el.querySelectorAll('.fImg'),function(i){return i.value.trim();}).filter(Boolean).slice(0,3)};
+      if(isNew){o.id=uid();t.info.push(o);}else Object.assign(x,o);
+      save();closeSheet();render();toast(isNew?'追加しました':'保存しました');
+    };
+    var d=el.querySelector('#fDel');if(d)d.onclick=function(){if(!confirm('この情報を削除しますか？\n紐付けた予定からも外れます。'))return;
+      t.info=t.info.filter(function(i){return i.id!==x.id;});t.schedule.forEach(function(s){if(s.infoId===x.id)s.infoId='';});save();closeSheet();render();toast('削除しました');};
+  });
+}
+
+function expSheet(t,x){
+  var isNew=!x,ds=days(t),tk0=key(today0());
+  if(!x){var dflt=ds.some(function(d){return key(d)===tk0;})?tk0:(ds[0]?key(ds[0]):'');x={cat:'food',day:dflt,owner:whoOf(t),tk:false,for:[]};}
+  var mem=t.members.length,cat=x.cat||'other',owner=x.owner||(mem?whoOf(t):'_'),tk=!!x.tk;
+  var opts=ds.map(function(d,i){var k=key(d);return '<option value="'+k+'"'+(k===x.day?' selected':'')+'>Day '+(i+1)+'　'+fday(d)+'</option>';}).join('');
+  var html=fld('内容','<input id="fT" value="'+esc(x.title||'')+'" placeholder="例：お昼ごはん">')+
+    fld('金額','<input id="fA" inputmode="numeric" value="'+(x.amount||'')+'" placeholder="例：1200">')+
+    '<label class="f"><span>種類</span><div class="seg" id="fCat">'+CATS.map(function(c){return '<button type="button" data-v="'+c.id+'" class="'+(cat===c.id?'on':'')+'">'+ico(c.icon,18)+c.label+'</button>';}).join('')+'</div></label>'+
+    (ds.length?fld('日にち','<select id="fDay">'+opts+'</select>'):'')+
+    (mem?'<label class="f"><span>誰の支払い</span><div class="tchips" id="fOwn">'+t.members.map(function(m){return '<button type="button" data-v="'+m.id+'" class="'+(owner===m.id?'on':'')+'">'+esc(m.name)+'</button>';}).join('')+'</div></label>':'')+
+    (mem>=2?'<label class="f"><span>立替</span><div class="tchips" id="fTk"><button type="button" data-v="0" class="'+(!tk?'on':'')+'">自分の分だけ</button><button type="button" data-v="1" class="'+(tk?'on':'')+'">他の人の分も払った</button></div></label>'+
+      '<div id="tkBox"'+(tk?'':' hidden')+'><label class="f"><span>誰の分を立替えた？</span><div class="tchips" id="fFor">'+t.members.map(function(m){return '<button type="button" data-v="'+m.id+'" class="'+((x.for||[]).indexOf(m.id)>=0?'on':'')+'"'+(m.id===owner?' hidden':'')+'>'+esc(m.name)+'</button>';}).join('')+'</div></label>'+
+      fld('立替えた金額（相手の分）','<input id="fTA" inputmode="numeric" value="'+(x.tAmount||'')+'" placeholder="空欄なら支払い全額">')+'</div>':'')+
+    '<button class="btn" id="fSave">'+(isNew?'記録する':'保存する')+'</button>'+(isNew?'':'<button class="btn danger" id="fDel">'+ico('trash',18)+'この支払いを削除</button>');
+  openSheet(isNew?'支払いを記録':'支払いを編集',html,function(el){
+    function seg(id,fn){el.querySelectorAll(id+' button').forEach(function(b){b.onclick=function(){el.querySelectorAll(id+' button').forEach(function(o){o.classList.toggle('on',o===b);});fn(b.dataset.v);};});}
+    seg('#fCat',function(v2){cat=v2;});
+    seg('#fOwn',function(v2){owner=v2;el.querySelectorAll('#fFor button').forEach(function(b){var me2=b.dataset.v===owner;b.hidden=me2;if(me2)b.classList.remove('on');});});
+    seg('#fTk',function(v2){tk=v2==='1';el.querySelector('#tkBox').hidden=!tk;});
+    el.querySelectorAll('#fFor button').forEach(function(b){b.onclick=function(){b.classList.toggle('on');};});
+    el.querySelector('#fSave').onclick=function(){
+      var a=num(v(el,'#fA'));if(!a){toast('金額を入れてください');return;}
+      var o={title:v(el,'#fT'),amount:a,cat:cat,day:el.querySelector('#fDay')?el.querySelector('#fDay').value:'',owner:mem?owner:'_',tk:false,for:[],tAmount:0};
+      if(tk&&mem>=2){
+        o.for=Array.prototype.slice.call(el.querySelectorAll('#fFor button.on')).map(function(b){return b.dataset.v;}).filter(function(id){return id!==owner;});
+        if(!o.for.length){toast('誰の分を立替えたか選んでください');return;}
+        var ta=num(v(el,'#fTA'));if(ta>a){toast('立替えた金額が支払い額を超えています');return;}
+        o.tk=true;o.tAmount=ta||a;
+      }
+      if(isNew){o.id=uid();t.expenses.push(o);}else{delete x.payer;delete x.targets;delete x.shares;delete x.mode;Object.assign(x,o);}
+      save();closeSheet();render();toast(isNew?'記録しました':'保存しました');
+    };
+    var d=el.querySelector('#fDel');if(d)d.onclick=function(){if(!confirm('この支払いを削除しますか？'))return;t.expenses=t.expenses.filter(function(i){return i.id!==x.id;});save();closeSheet();render();toast('削除しました');};
+  });
+}
+
+function whoSheet(t,first){
+  var me=meOf(t);
+  var html='<p class="hint" style="margin:0 0 14px">'+(first?'このスマホを使う人を選んでください。準備リストや家計簿が、あなた向けに表示されます。':'このスマホを使う人を選び直せます。')+'</p>'+
+    '<div class="tchips" style="margin-bottom:18px">'+t.members.map(function(m){return '<button data-me="'+m.id+'" class="mw'+(m.id===me?' on':'')+'">'+avatar(t,m.id,20)+esc(m.name)+'</button>';}).join('')+'</div>'+
+    (RO?'<button class="btn ghost" id="fSkip">名前を選ばずに見る</button>':
+      '<label class="f"><span>リストにいない場合は追加</span><div class="addline" style="margin:0"><input id="fNm" maxlength="12" placeholder="名前"><button class="btn sm" id="fAddMe">追加して選ぶ</button></div></label>');
+  openSheet('あなたは誰ですか？',html,function(el){
+    el.querySelectorAll('[data-me]').forEach(function(b){b.onclick=function(){setMe(t,b.dataset.me);closeSheet();render();toast(memName(t,b.dataset.me)+' として使います');};});
+    var sk=el.querySelector('#fSkip');if(sk)sk.onclick=function(){roWho='-';try{localStorage.setItem('shiori_who_'+t.id,'-');}catch(e){}closeSheet();render();};
+    var ad=el.querySelector('#fAddMe');if(ad){var go=function(){var n=v(el,'#fNm');if(!n)return;var m={id:uid(),name:n};t.members.push(m);setMe(t,m.id);closeSheet();render();toast(n+' として使います');};ad.onclick=go;el.querySelector('#fNm').onkeydown=function(e){if(e.key==='Enter'&&!e.isComposing){e.preventDefault();go();}};}
+  });
+}
+function tripForm(x){
+  return fld('旅の名前','<input id="fT" value="'+esc(x.title||'')+'" placeholder="例：京都 秋旅">')+
+    '<div class="two">'+fld('出発日','<input id="fS" type="date" value="'+esc(x.start||'')+'">')+fld('帰着日','<input id="fE" type="date" value="'+esc(x.end||'')+'">')+'</div>';
+}
+function readTrip(el){
+  var title=v(el,'#fT'),s=el.querySelector('#fS').value,e=el.querySelector('#fE').value||s;
+  if(!title){toast('旅の名前を入れてください');return null;}
+  if(!s){toast('出発日を入れてください');return null;}
+  if(e<s){toast('帰着日は出発日以降にしてください');return null;}
+  return {title:title,start:s,end:e};
+}
+function setSheet(t){
+  var me=meOf(t),g=ACC&&ACC.groups.filter(function(x){return x.trips.some(function(y){return y.tid===t.id;});})[0];
+  var html='<div class="sec-h" style="margin:0 0 10px"><h2>このしおり</h2></div>'+tripForm(t)+'<button class="btn" id="fSave">保存する</button>'+
+    '<div class="sec-h" style="margin:28px 0 6px"><h2>メンバー</h2><span class="meta">'+t.members.length+'人</span></div>'+
+    '<div class="mchips">'+t.members.map(function(m){return '<span class="mchip">'+avatar(t,m.id,26)+esc(m.name)+(m.id===me?'（自分）':'')+'</span>';}).join('')+'</div>'+
+    '<div class="hint" style="margin:8px 0 0">メンバーは'+(g?'グループ「'+esc(g.name)+'」':'グループ')+'と同じです。追加はホームのグループから行えます。</div>'+
+    '<button class="btn danger" id="fDel" style="margin-top:28px">'+ico('trash',18)+'このしおりを削除（全員の画面から消えます）</button>';
+  openSheet('設定',html,function(el){
+    el.querySelector('#fSave').onclick=function(){var o=readTrip(el);if(!o)return;Object.assign(t,o);save();closeSheet();render();toast('保存しました');};
+    el.querySelector('#fDel').onclick=function(){
+      if(!confirm('「'+t.title+'」を削除しますか？\n共有している全員の画面から消え、元に戻せません。'))return;
+      queue.push({t:t.id,ops:[{op:'delTrip'}]});flush();closeSheet();goHome();
+    };
+  });
+}
+
+function createTrip(o,myName){
+  var n=newTrip(o.title,o.start,o.end);
+  if(myName){var m={id:uid(),name:myName};n.members.push(m);S.me[n.id]=m.id;}
+  S.known.unshift({id:n.id,title:n.title,start:n.start});S.last=n.id;
+  T=n;base=null;rev=0;tab='schedule';save();render();app.scrollTop=0;toast('作りました');
+}
+function renderWelcome(){
+  app.innerHTML='<div class="welcome"><h1>旅のしおり</h1><p>まずはあなたの名前と、旅の名前・日程を入れましょう。</p>'+
+    fld('あなたの名前','<input id="fMe" maxlength="12" placeholder="例：耀平">')+'<div class="note">メンバーとして登録され、このスマホの持ち主になります</div>'+
+    tripForm({})+'<button class="btn" id="fMk">しおりを作る</button></div>';
+  document.getElementById('fMk').onclick=function(){
+    var me=v(app,'#fMe');if(!me){toast('あなたの名前を入れてください');return;}
+    var o=readTrip(app);if(!o)return;createTrip(o,me);};
+}
+function renderSetup(){
+  app.innerHTML='<div class="welcome"><h1>旅のしおり</h1><p>共有リンク、またはGASのウェブアプリURLを貼り付けてください。</p>'+
+    fld('共有リンク / GASのURL','<input id="fApi" type="url" placeholder="もらった共有リンクをここに貼る">')+
+    '<div class="note">共有リンクを貼ると、その旅がそのまま開きます</div><button class="btn" id="fGo">接続する</button></div>';
+  document.getElementById('fGo').onclick=function(){
+    var u=v(app,'#fApi'),lp=parseLink(u);if(lp){joinLink(lp);return;}
+    if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(u)){toast('GASのウェブアプリURLを入れてください');return;}
+    var b=this;b.disabled=true;b.textContent='接続を確認中…';
+    getJSON(u,'a=ping').then(function(r){if(!r||!r.ok)throw 0;S.api=u;savePrefs();render();toast('接続できました');})
+      .catch(function(){b.disabled=false;b.textContent='接続する';toast('接続できませんでした。URLと公開設定を確認してください');});
+  };
+}
+function renderLoading(){
+  app.innerHTML='<div class="welcome"><h1>旅のしおり</h1>'+(loadErr?
+    '<p>接続できませんでした。電波を確認してもう一度試してください。</p><button class="btn" id="fRe">もう一度読み込む</button><button class="btn ghost" id="fHome">ホームへ戻る</button>':
+    '<p>読み込み中…</p>')+'</div>';
+  var re=document.getElementById('fRe');if(re)re.onclick=function(){openTrip(S.last);};
+  var hm=document.getElementById('fHome');if(hm)hm.onclick=goHome;
+}
+
+/* ---------- アカウント・ホーム ---------- */
+var VIEW='home', HV='trips', ACC=null, ROSTER={}, ARCH=false, homeBusy=false;
+var THEMES=[
+  {id:'ryokan',name:'旅館',desc:'深緑と金、明朝の落ち着き',color:'#3F5D63'},
+  {id:'space',name:'宇宙',desc:'銀河と星座、月夜のしおり',color:'#05071A'},
+  {id:'soon1',name:'近日追加',desc:'新しい着せ替えを準備中',lock:true},
+  {id:'soon2',name:'近日追加',desc:'リクエスト受付中',lock:true}
+];
+function themeOf(id){for(var i=0;i<THEMES.length;i++)if(THEMES[i].id===id&&!THEMES[i].lock)return THEMES[i];return THEMES[0];}
+function applyTheme(id){var th=themeOf(id);S.theme=th.id;document.documentElement.setAttribute('data-theme',th.id);
+  var mc=document.querySelector('meta[name=theme-color]');if(mc)mc.setAttribute('content',th.color);savePrefs();}
+function showSplash(ms,cb){var sp=document.getElementById('splash');if(!sp){if(cb)cb();return;}
+  var c=sp.cloneNode(true);sp.parentNode.replaceChild(c,sp);c.classList.remove('out');document.body.classList.add('sp');
+  setTimeout(function(){c.classList.add('out');document.body.classList.remove('sp');if(cb)cb();},ms);}
+function rebuildRoster(){ROSTER={};if(!ACC)return;function add(p){if(p&&p.uid)ROSTER[p.uid]=p;}
+  add(ACC.me);ACC.friends.forEach(add);ACC.incoming.forEach(add);ACC.out.forEach(add);ACC.groups.forEach(function(g){g.members.forEach(add);});}
+function setAcc(r){if(r&&r.me){ACC=r;rebuildRoster();}return r;}
+function accApi(body){body.k=S.key;
+  return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){return r.json();})
+    .then(function(r){if(!r||r.error)throw new Error(errText(r&&r.error));return setAcc(r);});}
+function loadMe(){return getJSON(API,'a=me&k='+encodeURIComponent(S.key)).then(function(r){if(!r||r.error)throw new Error(r&&r.error||'通信エラー');return setAcc(r);});}
+function errText(e){e=String(e||'');if(e==='auth')return 'アカウントが見つかりません';if(e==='forbidden')return 'このグループのメンバーではありません';return e||'通信エラー。電波を確認してください';}
+function pAv(p,sz){sz=sz||22;p=p||{};return '<span class="av" style="width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.44)+'px">'+(p.img?'<img src="'+esc(p.img)+'" alt="">':esc((p.name||'？').charAt(0)))+'</span>';}
+function isFriend(uid){return ACC.friends.some(function(f){return f.uid===uid;});}
+function isOut(uid){return ACC.out.some(function(f){return f.uid===uid;});}
+function groupOf(gid){for(var i=0;i<ACC.groups.length;i++)if(ACC.groups[i].gid===gid)return ACC.groups[i];return null;}
+function pickImage(cb){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=function(){var f=inp.files&&inp.files[0];if(!f)return;var url=URL.createObjectURL(f),img=new Image();
+    img.onload=function(){
+      function draw(px,q){var c=document.createElement('canvas');c.width=c.height=px;var g=c.getContext('2d'),m=Math.min(img.width,img.height);
+        g.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,px,px);return c.toDataURL('image/jpeg',q);}
+      var d=draw(144,.8),q=.8;while(d.length>8000&&q>.35){q-=.1;d=draw(144,q);}
+      if(d.length>8000)d=draw(96,.6);
+      URL.revokeObjectURL(url);cb(d);};
+    img.onerror=function(){toast('この画像は読み込めませんでした');};img.src=url;};
+  inp.click();
+}
+
+/* はじめての画面 */
+function renderSignup(){
+  VIEW='setup';var img='';
+  app.innerHTML='<div class="welcome"><h1>はじめまして</h1><p>アカウントを作ると、フレンドとしおりを共有できます。旅が変わっても、登録はこの1回だけです。</p>'+
+    fld('名前','<input id="fNm" maxlength="20" placeholder="例：耀平">')+
+    '<label class="f"><span>プロフィール画像</span></label><div class="photo"><span id="suAv">'+pAv({name:'？'},72)+'</span><button class="btn ghost xs" id="fPic">写真を選ぶ</button></div>'+
+    '<div class="note">正方形に切り抜いて、小さく保存します。未設定なら名前の頭文字になります。</div>'+
+    '<button class="btn" id="fGo">はじめる</button></div>';
+  var nm=document.getElementById('fNm');
+  function pv(){document.getElementById('suAv').innerHTML=pAv({name:nm.value.trim()||'？',img:img},72);}
+  nm.oninput=pv;
+  document.getElementById('fPic').onclick=function(){pickImage(function(d){img=d;pv();});};
+  document.getElementById('fGo').onclick=function(){
+    var n=nm.value.trim();if(!n){toast('名前を入れてください');nm.focus();return;}
+    var b=this;b.disabled=true;b.textContent='作成中…';
+    fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({a:'signup',name:n,img:img})}).then(function(r){return r.json();}).then(function(r){
+      if(!r||r.error||!r.key)throw new Error(errText(r&&r.error));
+      S.key=r.key;setAcc(r);savePrefs();renderIssued();
+    }).catch(function(e){b.disabled=false;b.textContent='はじめる';toast(e.message||'作成できませんでした');});
+  };
+}
+function renderIssued(){
+  VIEW='setup';
+  app.innerHTML='<div class="welcome"><h1>ようこそ</h1><p>あなたの合言葉ができました。フレンドに伝えると、申請してもらえます。</p>'+
+    '<div class="codebox"><small>あなたの合言葉</small><b>'+esc(ACC.me.code)+'</b></div>'+
+    '<div class="note" style="margin-top:14px">合言葉は「フレンド」からいつでも確認できます。</div><button class="btn" id="fGo">つぎへ</button></div>';
+  document.getElementById('fGo').onclick=afterLogin;
+}
+function legacyList(){return (!S.migrated&&S.known&&S.known.length)?S.known.filter(function(x){return x&&x.id;}):[];}
+function afterLogin(){if(legacyList().length)renderMigrate();else goHome();}
+
+/* 今までのしおりの引き継ぎ */
+function renderMigrate(){
+  VIEW='setup';var list=legacyList();
+  app.innerHTML='<div class="welcome"><h1>引き継ぎ</h1><p>このスマホで使っていたしおりが見つかりました。引き継ぐと、アカウントで使えるようになります。</p><div id="migList"><p class="note">読み込み中…</p></div>'+
+    '<button class="btn ghost" id="fSkip">引き継がずに進む</button></div>';
+  document.getElementById('fSkip').onclick=function(){if(!confirm('引き継がずに進みますか？（あとから引き継ぐことはできません）'))return;S.migrated=true;savePrefs();goHome();};
+  var box=document.getElementById('migList'),html=[],n=0;
+  list.forEach(function(x,i){
+    getJSON(API,'a=claimInfo&t='+encodeURIComponent(x.id)).then(function(r){html[i]=r&&!r.error?migCard(x.id,r):'';}).catch(function(){html[i]='';}).then(function(){
+      n++;if(n<list.length)return;
+      var h=html.join('');box.innerHTML=h||'<p class="note">引き継げるしおりはありませんでした。</p>';bindMig(box);
+    });
+  });
+}
+function migCard(tid,r){
+  var free=r.members.filter(function(m){return !m.linked;});
+  return '<div class="mig" data-mig="'+tid+'" data-hasg="'+(r.hasGroup?1:0)+'"><h3>'+esc(r.title||'しおり')+'</h3><div class="note" style="margin:0 0 12px">'+esc((r.start||'').replace(/-/g,'/'))+'</div>'+
+    (free.length?'<label class="f"><span>このしおりの中のあなたは？</span><div class="tchips">'+free.map(function(m){return '<button data-mid="'+m.id+'">'+esc(m.name)+'</button>';}).join('')+'</div></label>'+
+      (r.hasGroup?'<div class="note">すでにグループがあるので、そこに入ります</div>':fld('グループ名','<input class="gnm" maxlength="20" placeholder="例：家族旅行">'))+
+      '<button class="btn" data-claim>引き継ぐ</button>':'<div class="note">全員が引き継ぎ済みです</div>')+'</div>';
+}
+function bindMig(box){
+  box.querySelectorAll('.mig').forEach(function(c){
+    var mid='';
+    c.querySelectorAll('[data-mid]').forEach(function(b){b.onclick=function(){mid=b.dataset.mid;c.querySelectorAll('[data-mid]').forEach(function(o){o.classList.toggle('on',o===b);});};});
+    var go=c.querySelector('[data-claim]');if(!go)return;
+    go.onclick=function(){
+      if(!mid){toast('あなたを選んでください');return;}
+      var g=c.querySelector('.gnm'),gn=g?g.value.trim():'';
+      if(g&&!gn){toast('グループ名を入れてください');g.focus();return;}
+      go.disabled=true;go.textContent='引き継ぎ中…';
+      accApi({a:'claim',tid:c.dataset.mig,mid:mid,gname:gn}).then(function(){
+        S.me=S.me||{};S.me[c.dataset.mig]=mid;
+        S.known=S.known.filter(function(x){return x.id!==c.dataset.mig;});if(!S.known.length)S.migrated=true;savePrefs();
+        c.classList.add('done');c.innerHTML='<h3>引き継ぎました</h3><div class="note" style="margin:0">ホームのグループから開けます</div>';
+        if(S.migrated){toast('引き継ぎが完了しました');setTimeout(goHome,700);}
+      }).catch(function(e){go.disabled=false;go.textContent='引き継ぐ';toast(e.message);});
+    };
+  });
+}
+
+/* ホーム */
+function goHome(){VIEW='home';T=null;base=null;ARCH=false;S.last=null;savePrefs();
+  try{history.replaceState(null,'',location.href.split(/[?#]/)[0]);}catch(e){}
+  if(ACC)renderHome();loadMe().then(function(){if(VIEW==='home'&&canHome())renderHome();}).catch(function(e){if(!ACC)renderHomeErr(e);});}
+function canHome(){var a=document.activeElement;return !document.querySelector('.sheet-bg')&&!(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'));}
+function renderHomeErr(e){app.innerHTML='<div class="welcome"><h1>旅のしおり</h1><p>'+esc(e&&e.message==='アカウントが見つかりません'?'アカウントが見つかりませんでした。':'接続できませんでした。電波を確認してください。')+'</p><button class="btn" id="fRe">もう一度読み込む</button></div>';
+  document.getElementById('fRe').onclick=goHome;}
+function mstamp(x){
+  if(x.arch)return '<span class="htag">思い出</span>';
+  var s=pd(x.start),e=pd(x.end)||s,td=today0();if(!s)return '';
+  var d=Math.round((s-td)/864e5);
+  if(d>0)return '<span class="mstamp"><em>出発まで</em><strong>'+d+'</strong><em>日</em></span>';
+  if(td<=e)return '<span class="mstamp"><em>旅行中</em><strong>'+(Math.round((td-s)/864e5)+1)+'</strong><em>日目</em></span>';
+  return '<span class="htag">おかえり</span>';
+}
+function rangeTxt(x){var s=pd(x.start),e=pd(x.end);if(!s)return '';return fday(s)+(e&&x.end!==x.start?' 〜 '+fday(e):'');}
+function renderHome(){
+  if(!ACC)return;VIEW='home';var me=ACC.me;
+  var h='<header class="ticket"><div class="hrow"><span class="brand">旅のしおり</span><div class="hbtns"><button class="hbtn bell'+(ACC.incoming.length?' has':'')+'" id="hBell" aria-label="お知らせ">'+ico('bell',22)+'<i></i></button></div></div>'+
+    '<div class="hmain"><div class="hme">'+pAv(me,50)+'<div><small>おかえりなさい</small><h1>'+esc(me.name)+'</h1></div></div></div></header><main id="main">';
+  if(HV==='friends')h+=hFriends();else if(HV==='settings')h+=hSettings();else h+=hTrips();
+  h+='</main><nav><div class="in">'+[['trips','しおり','book'],['friends','フレンド','people'],['settings','設定','sliders']].map(function(x){
+    return '<button data-hv="'+x[0]+'" class="'+(HV===x[0]?'on':'')+'">'+ico(x[2],22)+x[1]+(x[0]==='friends'&&ACC.incoming.length?'<i class="ndot"></i>':'')+'</button>';}).join('')+'</div></nav>';
+  var y=app.scrollTop;app.innerHTML=h;app.scrollTop=y;bindHome();
+}
+function hTrips(){
+  var h='';
+  if(!ACC.groups.length)h+='<div class="hempty">まだグループがありません。<br>グループを作ると、その中でしおりを作れます。<br>一緒に旅する人は「フレンド」から追加してください。</div>';
+  ACC.groups.forEach(function(g){
+    var act=g.trips.filter(function(x){return !x.arch;}),arc=g.trips.filter(function(x){return x.arch;});
+    h+='<div class="grp"><button class="grp-h" data-grp="'+g.gid+'"><h2>'+esc(g.name)+'</h2><span class="mav">'+g.members.map(function(m){return pAv(m,24);}).join('')+'</span>'+ico('arrow',16)+'</button>'+
+      act.concat(arc).map(function(x){return '<button class="hcard" data-open="'+x.tid+'"><span class="t"><b>'+esc(x.title||'しおり')+'</b><small>'+rangeTxt(x)+'</small></span>'+mstamp(x)+'</button>';}).join('')+
+      '<button class="dashed" data-nt="'+g.gid+'">＋ このグループでしおりをつくる</button></div>';
+  });
+  return h+'<button class="dashed" id="hNewG" style="margin-top:6px">＋ 新しいグループをつくる</button>';
+}
+function hFriends(){
+  var h='<div class="sec"><div class="sec-h"><h2>あなたの合言葉</h2></div><div class="codebox"><small>フレンドに伝えてください</small><b>'+esc(ACC.me.code)+'</b><button class="btn xs" id="hCopy">合言葉をコピー</button></div></div>'+
+    '<div class="sec"><div class="sec-h"><h2>フレンド申請する</h2></div><div class="addline" style="margin:0"><input id="hCode" placeholder="相手の合言葉"><button class="btn sm" id="hReq">申請</button></div>'+
+    (ACC.out.length?'<div class="frcard" style="margin-top:10px">'+ACC.out.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><span class="htag">承認待ち</span></div>';}).join('')+'</div>':'')+'</div>';
+  if(ACC.incoming.length)h+='<div class="sec"><div class="sec-h"><h2>届いた申請</h2><span class="meta">'+ACC.incoming.length+'件</span></div><div class="frcard">'+ACC.incoming.map(function(p){
+    return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b><button class="btn xs" data-fok="'+p.uid+'">承認</button><button class="btn xs ghost" data-fng="'+p.uid+'">見送る</button></div>';}).join('')+'</div></div>';
+  h+='<div class="sec"><div class="sec-h"><h2>フレンド</h2><span class="meta">'+ACC.friends.length+'人</span></div>'+(ACC.friends.length?'<div class="frcard">'+ACC.friends.map(function(p){return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b></div>';}).join('')+'</div>':'<div class="hempty" style="padding:12px">まだいません。合言葉を交換しましょう。</div>')+'</div>';
+  return h;
+}
+function hSettings(){
+  return '<div class="sec"><div class="sec-h"><h2>設定</h2></div><div class="tlist">'+
+    '<button class="row" id="hSkin"><span>着せ替え</span><span class="meta">'+esc(themeOf(S.theme).name)+'</span></button>'+
+    '<button class="row" id="hProf"><span>プロフィール</span><span class="meta">名前・画像</span></button></div></div>'+
+    '<div class="note" style="font-size:12px;color:var(--sub);line-height:1.8">アカウントはこのスマホに保存されています。機種変更やアプリの削除で、このアカウントには入れなくなります（しおりのデータは残ります）。</div>';
+}
+function bindHome(){
+  function on(id,fn){var el=document.getElementById(id);if(el)el.onclick=fn;}
+  qa('[data-hv]').forEach(function(b){b.onclick=function(){HV=b.dataset.hv;app.scrollTop=0;renderHome();};});
+  on('hBell',function(){HV='friends';app.scrollTop=0;renderHome();});
+  qa('[data-open]').forEach(function(b){b.onclick=function(){openTrip(b.dataset.open);};});
+  qa('[data-grp]').forEach(function(b){b.onclick=function(){groupSheet(b.dataset.grp);};});
+  qa('[data-nt]').forEach(function(b){b.onclick=function(){newTripSheet(b.dataset.nt);};});
+  on('hNewG',newGroupSheet);
+  on('hCopy',function(){var c=ACC.me.code;if(navigator.clipboard)navigator.clipboard.writeText(c).then(function(){toast('コピーしました');});else prompt('合言葉',c);});
+  on('hReq',function(){var i=document.getElementById('hCode'),c=i.value.trim();if(!c){toast('合言葉を入れてください');return;}
+    accApi({a:'friendReq',code:c}).then(function(){i.value='';renderHome();toast('申請しました');}).catch(function(e){toast(e.message);});});
+  qa('[data-fok]').forEach(function(b){b.onclick=function(){var n=(ROSTER[b.dataset.fok]||{}).name||'';accApi({a:'friendRes',uid:b.dataset.fok,ok:true}).then(function(){renderHome();toast(n+'さんとフレンドになりました');}).catch(function(e){toast(e.message);});};});
+  qa('[data-fng]').forEach(function(b){b.onclick=function(){accApi({a:'friendRes',uid:b.dataset.fng,ok:false}).then(renderHome).catch(function(e){toast(e.message);});};});
+  on('hSkin',skinSheet);on('hProf',profileSheet);
+}
+function pickChips(list,store){return '<div class="tchips">'+list.map(function(p){return '<button class="mw" data-pk="'+p.uid+'">'+pAv(p,20)+esc(p.name)+'</button>';}).join('')+'</div>';}
+function bindPick(el,store){el.querySelectorAll('[data-pk]').forEach(function(b){b.onclick=function(){store[b.dataset.pk]=!store[b.dataset.pk];b.classList.toggle('on',!!store[b.dataset.pk]);};});}
+function picked(store){return Object.keys(store).filter(function(k){return store[k];});}
+function newGroupSheet(){var st={};
+  openSheet('新しいグループ',fld('グループ名','<input id="gNm" maxlength="20" placeholder="例：家族、大学の友達">')+
+    '<label class="f"><span>メンバー（フレンドから選ぶ）</span></label>'+(ACC.friends.length?pickChips(ACC.friends):'<div class="hint" style="margin-bottom:14px">フレンドがまだいません。あとから追加できます。</div>')+
+    '<div class="hint" style="margin:10px 0 16px">メンバーは誰でも、自分のフレンドをあとから追加できます。</div><button class="btn" id="gGo">つくる</button>',function(el){
+    bindPick(el,st);
+    el.querySelector('#gGo').onclick=function(){var n=v(el,'#gNm');if(!n){toast('グループ名を入れてください');return;}var b=this;b.disabled=true;
+      accApi({a:'groupCreate',name:n,members:picked(st)}).then(function(){closeSheet();renderHome();toast('グループをつくりました');}).catch(function(e){b.disabled=false;toast(e.message);});};
+  });
+}
+function groupSheet(gid){
+  var g=groupOf(gid);if(!g)return;var me=ACC.me.uid;
+  var rows=g.members.map(function(p){var st=p.uid===me?'<span class="st">あなた</span>':isFriend(p.uid)?'<span class="st">フレンド</span>':isOut(p.uid)?'<span class="htag">申請済み</span>':'<button class="btn xs" data-freq="'+p.uid+'">フレンド申請</button>';
+    return '<div class="frow">'+pAv(p,30)+'<b>'+esc(p.name)+'</b>'+st+'</div>';}).join('');
+  var cand=ACC.friends.filter(function(f){return !g.members.some(function(m){return m.uid===f.uid;});}),st={};
+  openSheet(g.name,'<div class="sec-h" style="margin:0 0 6px"><h2>メンバー</h2><span class="meta">'+g.members.length+'人</span></div><div class="frcard">'+rows+'</div>'+
+    '<div class="hint" style="margin:8px 0 22px">同じグループのメンバーには、合言葉なしでフレンド申請できます。</div>'+
+    '<div class="sec-h" style="margin:0 0 10px"><h2>メンバーを追加</h2></div>'+(cand.length?pickChips(cand)+'<button class="btn" id="gAdd" style="margin-top:12px">追加する</button>':'<div class="hint" style="margin-bottom:16px">追加できるフレンドがいません。</div>')+
+    '<div class="sec-h" style="margin:26px 0 10px"><h2>グループ名</h2></div><div class="addline" style="margin:0"><input id="gRn" maxlength="20" value="'+esc(g.name)+'"><button class="btn sm" id="gRnGo">変更</button></div>',function(el){
+    bindPick(el,st);
+    el.querySelectorAll('[data-freq]').forEach(function(b){b.onclick=function(){b.disabled=true;accApi({a:'friendReq',uid:b.dataset.freq}).then(function(){toast('申請しました');groupSheet(gid);}).catch(function(e){b.disabled=false;toast(e.message);});};});
+    var ad=el.querySelector('#gAdd');if(ad)ad.onclick=function(){var p=picked(st);if(!p.length){toast('追加する人を選んでください');return;}ad.disabled=true;
+      accApi({a:'groupAdd',gid:gid,members:p}).then(function(){toast('追加しました');renderHome();groupSheet(gid);}).catch(function(e){ad.disabled=false;toast(e.message);});};
+    el.querySelector('#gRnGo').onclick=function(){var n=v(el,'#gRn');if(!n)return;accApi({a:'groupRename',gid:gid,name:n}).then(function(){closeSheet();renderHome();toast('変更しました');}).catch(function(e){toast(e.message);});};
+  });
+}
+function newTripSheet(gid){
+  var g=groupOf(gid);if(!g)return;
+  openSheet(g.name+'のしおり',tripForm({})+'<div class="hint" style="margin:-4px 0 16px">メンバー：'+esc(g.members.map(function(m){return m.name;}).join('、'))+'（グループ全員に届きます）</div><button class="btn" id="fMk">しおりをつくる</button>',function(el){
+    el.querySelector('#fMk').onclick=function(){var o=readTrip(el);if(!o)return;var b=this;b.disabled=true;b.textContent='作成中…';var tid=uid();
+      accApi({a:'tripCreate',gid:gid,tid:tid,title:o.title,start:o.start,end:o.end}).then(function(r){
+        closeSheet();var n=newTrip(o.title,o.start,o.end);n.id=tid;n.members=r.members;
+        S.me=S.me||{};S.me[tid]=ACC.me.uid;VIEW='trip';ARCH=false;S.last=tid;T=n;base=null;rev=0;tab='schedule';save();render();app.scrollTop=0;toast('つくりました');
+      }).catch(function(e){b.disabled=false;b.textContent='しおりをつくる';toast(e.message);});};
+  });
+}
+function profileSheet(){
+  var me=ACC.me,img=me.img,cl=false;
+  openSheet('プロフィール','<div class="photo"><span id="pAv">'+pAv(me,72)+'</span><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost xs" id="pPic">写真を選ぶ</button>'+(me.img?'<button class="btn ghost xs" id="pRm">写真を外す</button>':'')+'</div></div>'+
+    fld('名前','<input id="pNm" maxlength="20" value="'+esc(me.name)+'" placeholder="例：耀平">')+'<button class="btn" id="pGo">保存する</button>',function(el){
+    function pv(){el.querySelector('#pAv').innerHTML=pAv({name:v(el,'#pNm')||me.name,img:img},72);}
+    el.querySelector('#pPic').onclick=function(){pickImage(function(d){img=d;cl=true;pv();});};
+    var rm=el.querySelector('#pRm');if(rm)rm.onclick=function(){img='';cl=true;pv();};
+    el.querySelector('#pGo').onclick=function(){var n=v(el,'#pNm');if(!n){toast('名前を入れてください');return;}var body={a:'profile',name:n};if(cl)body.img=img;
+      accApi(body).then(function(){closeSheet();renderHome();toast('保存しました');}).catch(function(e){toast(e.message);});};
+  });
+}
+function skinSheet(){
+  function pv(t){if(t.lock)return '<div class="pv pv-soon">COMING SOON</div>';if(t.id==='space')return '<div class="pv pv-space"><div class="mn"></div><div class="h">旅のしおり</div><div class="c"></div></div>';return '<div class="pv pv-ryokan"><div class="h">旅のしおり</div><div class="c"></div></div>';}
+  openSheet('着せ替え','<div class="hint" style="margin:0 0 14px">選ぶとすぐに切り替わります。スプラッシュ画面も着せ替えに合わせて変わります。このスマホだけに反映されます。</div><div class="skins">'+
+    THEMES.map(function(t){return '<button class="skin'+(t.id===S.theme?' on':'')+(t.lock?' lock':'')+'" data-skin="'+t.id+'"'+(t.lock?' disabled':'')+'>'+pv(t)+'<span class="ok">使用中</span><span class="meta"><b>'+t.name+'</b><small>'+t.desc+'</small></span></button>';}).join('')+'</div>',function(el){
+    el.querySelectorAll('[data-skin]').forEach(function(b){b.onclick=function(){if(b.disabled||b.dataset.skin===S.theme)return;applyTheme(b.dataset.skin);closeSheet();renderHome();showSplash(1300);};});
+  });
+}
+
+/* しおりの中：アカウントとの紐づけ */
+function myMid(t){if(!ACC||!t)return '';for(var i=0;i<t.members.length;i++)if(t.members[i].uid===ACC.me.uid)return t.members[i].id;return '';}
+function syncMe(t){var m=myMid(t);if(m){S.me=S.me||{};S.me[t.id]=m;}}
+function claimSheet(t){
+  var free=t.members.filter(function(m){return !m.uid;});if(!free.length)return;
+  openSheet('このしおりの中のあなたは？','<p class="hint" style="margin:0 0 14px">以前からこのしおりを使っていた場合は、自分を選ぶとアカウントと紐づきます。</p><div class="tchips" style="margin-bottom:16px">'+
+    free.map(function(m){return '<button data-cm="'+m.id+'">'+esc(m.name)+'</button>';}).join('')+'</div><button class="btn ghost" data-close>どれでもない</button>',function(el){
+    el.querySelectorAll('[data-cm]').forEach(function(b){b.onclick=function(){accApi({a:'claim',tid:t.id,mid:b.dataset.cm}).then(function(){closeSheet();toast('紐づけました');openTrip(t.id);}).catch(function(e){toast(e.message);});};});
+  });
+}
+function archBar(){return ARCH?'<div class="archbar">思い出として保管されたしおりです（閲覧のみ）。<div class="btns"><button class="btn xs" id="aRes">編集できる状態に戻す</button><button class="btn xs ghost" id="aJson">JSONで保存</button></div></div>':'';}
+function bindArch(t){
+  var r=document.getElementById('aRes');if(r)r.onclick=function(){if(!confirm('編集できる状態に戻しますか？'))return;accApi({a:'restore',tid:t.id}).then(function(){toast('戻しました');openTrip(t.id);}).catch(function(e){toast(e.message);});};
+  var j=document.getElementById('aJson');if(j)j.onclick=function(){
+    var name=(t.title||'shiori')+'.json',blob=new Blob([JSON.stringify(t,null,2)],{type:'application/json'});
+    try{var f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:t.title}).catch(function(){});return;}}catch(e){}
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},500);};
+}
+
+/* ---------- sync (GAS) ---------- */
+var COLL=[['sch',function(t){return t.schedule;}],['inf',function(t){return t.info;}],['exp',function(t){return t.expenses;}],['items',function(t){return t.prep.items;}],['todos',function(t){return t.prep.todos;}],['av',function(t){return t.av;}]];
+function cleanItem(k,x){var o={};Object.keys(x).sort().forEach(function(p){if(!((k==='items'||k==='todos')&&p==='checks'))o[p]=x[p];});return o;}
+function diff(b,t){
+  var ops=[];
+  var mt=JSON.stringify({title:t.title,start:t.start,end:t.end,members:t.members});
+  var mb=b?JSON.stringify({title:b.title,start:b.start,end:b.end,members:b.members}):'';
+  if(mb!==mt)ops.push({op:'meta',v:JSON.parse(mt)});
+  COLL.forEach(function(c){
+    var k=c[0],bl=b?c[1](b):[],tl=c[1](t),bm={},tm={};
+    bl.forEach(function(x){bm[x.id]=x;});
+    tl.forEach(function(x,i){
+      if(!x.c)x.c=Date.now()+i;tm[x.id]=1;
+      var s=JSON.stringify(cleanItem(k,x));
+      if(!bm[x.id]||JSON.stringify(cleanItem(k,bm[x.id]))!==s)ops.push({op:'put',k:k,id:x.id,v:cleanItem(k,x)});
+      if(k==='items'||k==='todos'){
+        var bc=(bm[x.id]&&bm[x.id].checks)||{},tc=x.checks||{},all={};
+        Object.keys(bc).concat(Object.keys(tc)).forEach(function(m){all[m]=1;});
+        Object.keys(all).forEach(function(m){if(!!bc[m]!==!!tc[m])ops.push({op:'chk',id:x.id,m:m,on:!!tc[m]});});
+      }
+    });
+    bl.forEach(function(x){if(!tm[x.id])ops.push({op:'del',k:k,id:x.id});});
+  });
+  return ops;
+}
+function build(id,d){
+  var m=d.meta||{},chk=d.chk||{};
+  function pc(l){return (l||[]).map(function(x){x.checks=chk[x.id]||{};return x;});}
+  return norm({id:id,title:m.title||'',start:m.start||'',end:m.end||'',members:m.members||[],
+    av:d.av||[],schedule:d.sch||[],info:d.inf||[],expenses:d.exp||[],prep:{items:pc(d.items),todos:pc(d.todos)}});
+}
+function getJSON(api,q,ms){var ac=window.AbortController?new AbortController():null,tm=ac?setTimeout(function(){ac.abort();},ms||15000):0;return fetch(api+(api.indexOf('?')>=0?'&':'?')+q,{cache:'no-store',signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);return r.json();},function(e){clearTimeout(tm);throw e;});}
+function postJSON(body){body.k=S.key;return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){return r.json();});}
+var syncSt='';
+function avatar(t,id,sz){sz=sz||22;var a=find(t.av||[],id),n=memName(t,id)||'?',m=find(t.members||[],id),r=m&&m.uid&&ROSTER[m.uid],im=(r&&r.img)||(a&&a.img)||'';
+  return '<span class="av" style="width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.46)+'px">'+(im?'<img src="'+esc(im)+'" alt="">':esc(n.charAt(0)))+'</span>';}
+function pickAvatar(t,id){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=function(){
+    var f=inp.files&&inp.files[0];if(!f)return;var url=URL.createObjectURL(f),img=new Image();
+    img.onload=function(){
+      function draw(px,q){var c=document.createElement('canvas');c.width=c.height=px;var g=c.getContext('2d'),m=Math.min(img.width,img.height);
+        g.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,px,px);return c.toDataURL('image/jpeg',q);}
+      var d=draw(120,.8),q=.8;while(d.length>7000&&q>.35){q-=.1;d=draw(120,q);}
+      if(d.length>7000)d=draw(80,.6);
+      URL.revokeObjectURL(url);
+      var a=find(t.av,id);if(a)a.img=d;else t.av.push({id:id,img:d});
+      save();closeSheet();render();toast('写真を設定しました');
+    };
+    img.onerror=function(){toast('この画像は読み込めませんでした');};
+    img.src=url;
+  };
+  inp.click();
+}
+function avSheet(t,id){
+  var a=find(t.av,id);
+  openSheet(memName(t,id)+' の写真','<div style="display:flex;justify-content:center;margin:4px 0 18px">'+avatar(t,id,96)+'</div><button class="btn" id="fPick">写真を選ぶ</button>'+(a?'<button class="btn danger" id="fRm">写真を外す</button>':''),function(el){
+    el.querySelector('#fPick').onclick=function(){pickAvatar(t,id);};
+    var rm=el.querySelector('#fRm');if(rm)rm.onclick=function(){t.av=t.av.filter(function(x){return x.id!==id;});save();closeSheet();render();};
+  });
+}
+function onlineHtml(){if(!T||!onlineIds.length)return '';return '<i class="dot"></i>'+onlineIds.map(function(id){return avatar(T,id,18);}).join('')+'<span>'+esc(onlineIds.map(function(id){return memName(T,id);}).join('、'))+' が見ています</span>';}
+function setOnline(r){
+  if(!T||!r||!r.online)return;var me=meOf(T),now=r.now||Date.now();
+  onlineIds=T.members.filter(function(m){return m.id!==me&&r.online[m.id]&&now-r.online[m.id]<45000;}).map(function(m){return m.id;});
+  var el=document.getElementById('online');if(el)el.innerHTML=onlineHtml();
+}
+function meQ(id){var m=(S.me||{})[id];return m?'&m='+encodeURIComponent(m):'';}
+function setSync(s){
+  syncSt=s;var el=document.querySelector('.brand');if(!el)return;
+  var n=new Date(),hm=n.getHours()+':'+('0'+n.getMinutes()).slice(-2);
+  el.textContent=s==='saving'?'保存中…':s==='err'?'オフライン（あとで保存します）':s==='ok'?'同期済み '+hm:'旅のしおり';
+}
+function flush(){
+  if(busy||!queue.length)return;busy=true;setSync('saving');
+  var job=queue[0];
+  postJSON(job).then(function(r){
+    if(!r||r.error)throw r&&r.error;
+    queue.shift();busy=false;
+    if(T&&job.t===T.id&&!queue.length&&r.data)applyResp(r);
+    setSync('ok');flush();
+  }).catch(function(){busy=false;setSync('err');setTimeout(flush,5000);});
+}
+function canApply(){var a=document.activeElement;return !document.querySelector('.sheet-bg')&&!(a&&app.contains(a)&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'));}
+function applyResp(r){
+  if(!r||r.same||!r.data)return;
+  if(!r.data.meta){notFound();return;}
+  if(busy||queue.length)return;
+  if(!canApply()){pending=r;return;}
+  pending=null;rev=r.rev;T=build(T.id,r.data);syncMe(T);base=clone(T);
+  savePrefs();
+  var y=app.scrollTop;render();app.scrollTop=y;
+}
+function notFound(){T=null;base=null;toast('このしおりは見つかりませんでした');goHome();}
+function openTrip(id){
+  VIEW='trip';S.last=id;T=null;base=null;rev=0;pending=null;loadErr=false;ARCH=false;tab=tab||'schedule';savePrefs();render();
+  getJSON(API,'a=get&t='+encodeURIComponent(id)+'&k='+encodeURIComponent(S.key)+meQ(id)).then(function(r){
+    if(!r||r.error)throw new Error(r&&r.error);
+    if(!r.data||!r.data.meta){notFound();return;}
+    if(VIEW!=='trip'||S.last!==id)return;
+    ARCH=!!r.archived;rev=r.rev;T=build(id,r.data);syncMe(T);base=clone(T);setOnline(r);
+    openTrip._retry=0;savePrefs();render();setSync(ARCH?'':'ok');
+  }).catch(function(e){
+    if(e&&e.message==='forbidden'){toast('このしおりのメンバーではありません');goHome();return;}
+    if(!openTrip._retry){openTrip._retry=1;setTimeout(function(){if(S.last===id&&!T&&VIEW==='trip')openTrip(id);},1500);return;}openTrip._retry=0;loadErr=true;render();});
+}
+function poll(){
+  if(VIEW==='home'){if(S.key&&!document.hidden&&canHome()&&!homeBusy){homeBusy=true;loadMe().then(function(){if(VIEW==='home'&&canHome())renderHome();}).catch(function(){}).then(function(){homeBusy=false;});}return;}
+  if(!T||ARCH||busy||queue.length||document.hidden)return;
+  if(pending){if(canApply())applyResp(pending);return;}
+  getJSON(API,'a=get&t='+encodeURIComponent(T.id)+'&k='+encodeURIComponent(S.key)+'&rev='+rev+meQ(T.id)).then(function(r){
+    if(!r||r.error)throw 0;setSync('ok');setOnline(r);if(!r.same)applyResp(r);
+  }).catch(function(){setSync('err');});
+}
+setInterval(poll,15000);
+setInterval(function(){if(T&&tab==='schedule'&&!document.hidden&&canApply()){var y=app.scrollTop;render();app.scrollTop=y;}},30000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden){poll();flush();}});
+document.addEventListener('focusout',function(){setTimeout(function(){if(pending&&canApply())applyResp(pending);},300);});
+
+function shareTrip(t){
+  var url=tripUrl(t.id);
+  if(navigator.share){navigator.share({title:t.title+' のしおり',text:t.title+' のしおりです。開いて自分の名前を選んでね',url:url}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){toast('共有リンクをコピーしました');});}
+  else prompt('このリンクを送ってください',url);
+}
+
+/* ---------- boot ---------- */
+applyTheme(S.theme||'ryokan');
+tab=S.tab||'schedule';
+document.body.classList.add('sp');
+(function(){
+  var sp=document.getElementById('splash'),t0=Date.now(),done=false;
+  function finish(fn){var w=Math.max(0,1500-(Date.now()-t0));setTimeout(function(){if(done)return;done=true;if(sp)sp.classList.add('out');document.body.classList.remove('sp');fn();},w);}
+  if(!S.key){finish(renderSignup);return;}
+  loadMe().then(function(){finish(function(){if(legacyList().length)renderMigrate();else{VIEW='home';renderHome();}});})
+    .catch(function(e){finish(function(){renderHomeErr(e);});});
+})();
+})();
+</script>
+</body>
+</html>
